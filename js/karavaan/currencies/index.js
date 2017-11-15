@@ -47,6 +47,21 @@ function formatAmount(amount: number, decimals: number) {
   return r;
 }
 
+function idk() {
+  return (
+    <ListItem
+      button
+      onPress={() => this.pickTrip(currency.tag)}
+      key={currency.tag}
+    >
+      <Grid>
+        <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
+        <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
+        <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
+      </Grid>
+    </ListItem>);
+}
+
 class CurrenciesInner extends Component {
   pickCurrency(tag: string) {
     this.props.pickCurrency(tag);
@@ -56,6 +71,20 @@ class CurrenciesInner extends Component {
     /* this.props.addTrip();
     this.props.navigation.navigate('TripInfo'); */
     console.log('ADD CURRENCY PLS');
+  }
+  renderHeader(currency: Currency) {
+    return (
+      <Grid>
+        <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
+        <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
+        <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
+      </Grid>);
+  }
+  renderContent(currency: Currency) {
+    return (<View>
+      <Button><Text>Fetch rate online</Text></Button>
+      <Button><Text>Delete</Text></Button>
+    </View>);
   }
   render() {
     const currencies = Currency.Currencies.filter(c => c.tag != 'USD');
@@ -104,17 +133,11 @@ class CurrenciesInner extends Component {
           <View style={{ padding: 5, paddingLeft: 15 }}>
             <Text style={{ color: '#aaa' }}>Rate is relative to the main currency. E.g. EUR having a rate of 2 would mean 1 USD = 2 EUR</Text>
           </View>
-          {currencies.map(currency => (<ListItem
-            button
-            onPress={() => this.pickTrip(currency.tag)}
-            key={currency.tag}
-          >
-            <Grid>
-              <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
-              <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
-              <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
-            </Grid>
-          </ListItem>))}
+          <Accordion
+            sections={currencies}
+            renderHeader={section => this.renderHeader(section)}
+            renderContent={section => this.renderContent(section)}
+          />
         </Content>
       </Container>
     );
@@ -148,3 +171,4 @@ export default StackNavigator(
     headerMode: 'none',
   },
 );
+
