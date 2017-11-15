@@ -24,10 +24,11 @@
 		"native-base": "2.3.1",
 		"react": "16.0.0-alpha.13",
 		"react-native": "0.46.4",
+		"react-native-collapsible": "^0.9.0",
+		"react-native-datepicker": "1.6.0",
 		"react-native-ui-xg": "^0.0.6",
 		"react-navigation": "1.0.0-beta.11",
 		"react-redux": "5.0.6",
-		"redux": "3.7.2",
-		"react-native-datepicker": "1.6.0"
+		"redux": "3.7.2"
 	}
 }

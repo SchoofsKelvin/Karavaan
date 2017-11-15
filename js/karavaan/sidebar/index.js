@@ -32,6 +32,12 @@ const datas = [
     bg: '#BE6F50',
   },
   {
+    name: 'Currencies',
+    route: 'Currencies',
+    icon: 'logo-usd',
+    bg: '#BE6F50',
+  },
+  {
     name: 'Anatomy',
     route: 'Anatomy',
     icon: 'phone-portrait',

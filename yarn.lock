@@ -3171,6 +3171,12 @@ react-native-buttons@^0.0.4:
     react-native-colortool "^0.0.1"
     react-native-stylesheet-xg "^1.0.3"
 
+react-native-collapsible@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-0.9.0.tgz#207849faa15493820d19fa6a5e58f7c7b6c1b910"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-colortool@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-colortool/-/react-native-colortool-0.0.1.tgz#0ae21efe2e3df18a1c3d9b48c30acaaa647dfb66"
@@ -3183,7 +3189,7 @@ react-native-confirm@^0.0.1:
     react-native-input-xg "^0.0.2"
     react-native-stylesheet-xg "^1.1.0"
 
-react-native-datepicker@^1.4.4:
+react-native-datepicker@1.6.0, react-native-datepicker@^1.4.4:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.6.0.tgz#3a40dc9b112023c49d60ba2a0789d440b7e3d97c"
   dependencies:

@@ -147,7 +147,7 @@ class ExpenseEntry extends Component {
 
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips[store.selectedTrip];
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   const index = store.selectedExpense;
   const expense: Expense = trip.expenses[index];
   const entry = expense.valutas[store.selectedExpenseEntry];

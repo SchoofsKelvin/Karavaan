@@ -29,7 +29,7 @@ import styles from './styles';
 import Home from './home';
 import Expenses from './expenses';
 
-import { Trip, SelectExpense } from '../model';
+import { Trip, SelectExpense, StoreTemplate } from '../model';
 
 function tabHeader(name) {
   return (
@@ -62,6 +62,7 @@ class TripInfo extends Component {
     this.props.navigation.navigate('EditUser');
   }
   render() {
+    if (!this.props.trip) return (<Text>Loading...</Text>);
     return (
       <Container style={styles.container} >
         <Header hasTabs>
@@ -93,8 +94,8 @@ class TripInfo extends Component {
 }
 
 
-function mapStateToProps(store) {
-  const trip = store.trips[store.selectedTrip];
+function mapStateToProps(store: StoreTemplate) {
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   return { trip };
 }
 function mapDispatchToProps(dispatch) {

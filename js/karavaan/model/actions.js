@@ -9,6 +9,7 @@ import { StoreTemplate } from './store';
 export const SET_TRIP_NAME = 'SET_TRIP_NAME';
 export const SET_TRIP_MAIN_CURRENCY = 'SET_TRIP_MAIN_CURRENCY';
 export const SELECT_TRIP = 'SELECT_TRIP';
+export const ADD_TRIP = 'ADD_TRIP';
 
 export const SELECT_EXPENSE = 'SELECT_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
@@ -18,14 +19,17 @@ export const SELECT_EXPENSE_ENTRY = 'SELECT_EXPENSE_ENTRY';
 export const DELETE_EXPENSE_ENTRY = 'DELETE_EXPENSE_ENTRY';
 export const SAVE_EXPENSE_ENTRY = 'SAVE_EXPENSE_ENTRY';
 
-export function SetTripName(index: number, newName: string) {
-  return { type: SET_TRIP_NAME, trip: index, newName };
+export function SetTripName(guid: string, newName: string) {
+  return { type: SET_TRIP_NAME, trip: guid, newName };
 }
-export function SetTripMainCurrency(index: number, currency: string) {
-  return { type: SET_TRIP_MAIN_CURRENCY, trip: index, currency };
+export function SetTripMainCurrency(guid: string, currency: string) {
+  return { type: SET_TRIP_MAIN_CURRENCY, trip: guid, currency };
 }
-export function SelectTrip(index: number) {
-  return { type: SELECT_TRIP, trip: index };
+export function SelectTrip(guid: string) {
+  return { type: SELECT_TRIP, trip: guid };
+}
+export function AddTrip() {
+  return { type: ADD_TRIP };
 }
 
 export function SelectExpense(index: number) {
@@ -48,21 +52,20 @@ export function SaveExpenseEntry(user: string, valuta: Valuta) {
   return { type: SAVE_EXPENSE_ENTRY, user, valuta };
 }
 
-
 export function Reducer(state: StoreTemplate, action) {
   console.log('Action:', action, state, `(actionId was ${state.actionId})`);
   const newState: StoreTemplate = {};
   newState.actionId = state.actionId + 1;
   switch (action.type) {
     case SET_TRIP_NAME: {
-      const curTrip: Trip = state.trips[action.trip];
+      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       newTrip.name = action.newName;
       newState.trips = state.trips.map(trip => (trip == curTrip ? newTrip : trip));
       break;
     }
     case SET_TRIP_MAIN_CURRENCY: {
-      const curTrip: Trip = state.trips[action.trip];
+      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       newTrip.mainCurrency = action.currency;
       newState.trips = state.trips.map(trip => (trip == curTrip ? newTrip : trip));
@@ -77,9 +80,18 @@ export function Reducer(state: StoreTemplate, action) {
       newState.selectedExpenseEntry = action.entry;
       break;
 
+    case ADD_TRIP: {
+      let i = state.trips.find(t => t.name == 'Unnamed') && 1;
+      while (i && state.trips.find(t => t.name == `Unnamed${i}`)) i += 1;
+      const newTrip = new Trip(`Unnamed${i || ''}`);
+      newState.selectedTrip = newTrip.guid;
+      newState.trips = [...state.trips, newTrip];
+      break;
+    }
+
     case SAVE_EXPENSE:
     case DELETE_EXPENSE: {
-      const curTrip: Trip = state.trips[state.selectedTrip];
+      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       newTrip.expenses = curTrip.expenses.slice(0);
       if (action.type == DELETE_EXPENSE) {
@@ -99,7 +111,7 @@ export function Reducer(state: StoreTemplate, action) {
 
     case SAVE_EXPENSE_ENTRY:
     case DELETE_EXPENSE_ENTRY: {
-      const curTrip: Trip = state.trips[state.selectedTrip];
+      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       const currentExpense: Expense = newTrip.expenses[state.selectedExpense];
       const newExpense = Object.assign(new Expense(), currentExpense);

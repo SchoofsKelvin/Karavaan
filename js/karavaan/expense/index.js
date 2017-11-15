@@ -100,7 +100,7 @@ class ExpenseView extends Component {
                 onPress={() => this.editEntry(index)}
               >
                 <Left><Text>{user}</Text></Left>
-                <Right style={{ width: 30 }}><Text>{valuta.amount} {valuta.tag}</Text></Right>
+                <Text style={{ alignSelf: 'flex-end' }}>{valuta.amount} {valuta.currency.tag}</Text>
               </ListItem>)}
             renderLeftHiddenRow={(_, secId, index: number) =>
               (<Button
@@ -138,7 +138,7 @@ class ExpenseView extends Component {
 
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips[store.selectedTrip];
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   const index = store.selectedExpense;
   const expense: Expense = trip.expenses[index];
   return { trip, expense, index };

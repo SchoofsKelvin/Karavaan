@@ -85,7 +85,7 @@ class ValutaInput extends Component {
 
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips[store.selectedTrip];
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   const currencies = Currency.Currencies;
   return { trip, /* expense, index, entry, */ currencies };
 }

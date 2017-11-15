@@ -40,6 +40,12 @@ import styles from '.';
 
 import { Trip, Expense, Valuta, Currency, SelectExpense, SetTripName, SetTripMainCurrency } from '../model';
 
+const Summaries = [
+  ['User Debts', 'UserDueSummary'],
+  ['A', 'UserDueSummary'],
+  ['B', 'UserDueSummary'],
+];
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +96,26 @@ class Home extends Component {
               </Body>
             </CardItem>
           </Card>
+          <Card>
+            <CardItem header>
+              <Text>Summaries</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                {Summaries.map(([title, route]) => (
+                  <Button
+                    block
+                    light
+                    style={{ margin: 5 }}
+                    key={title}
+                    onPress={() => this.props.navigation.navigate(route)}
+                  >
+                    <Text>{title}</Text>
+                  </Button>
+                ))}
+              </Body>
+            </CardItem>
+          </Card>
         </Content>
       </Container>
     );
@@ -97,7 +123,7 @@ class Home extends Component {
 }
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips[store.selectedTrip];
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   return {
     selectedTrip: store.selectedTrip,
     trip,

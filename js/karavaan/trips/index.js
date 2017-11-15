@@ -23,13 +23,15 @@ import {
   FooterTab,
 } from 'native-base';
 
-import { Trip, SelectTrip } from '../model';
+import { Trip, SelectTrip, AddTrip } from '../model';
 
 import TripInfo from '../tripinfo';
 import Expense from '../expense';
 import ExpenseEntry from '../expense-entry';
 import EditExpense from '../edit-expense';
 import EditUser from '../edit-user';
+
+import { UserDueSummary } from '../summaries';
 
 import styles from '.';
 
@@ -42,7 +44,13 @@ class TripsInner extends Component {
     this.props.pickTrip(index);
     this.props.navigation.navigate('TripInfo');
   }
+  addTrip() {
+    this.props.addTrip();
+    this.props.navigation.navigate('TripInfo');
+  }
   render() {
+    const trips: Trip[] = this.props.trips;
+    trips.sort((a, b) => (a.name.toLocaleUpperCase() > b.name.toLocaleUpperCase() ? 1 : -1));
     return (
       <Container style={styles.container}>
         <Header>
@@ -57,27 +65,29 @@ class TripsInner extends Component {
           <Body>
             <Title>Trips</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={() => this.addTrip()}><Icon name="add" /></Button>
+          </Right>
 
         </Header>
 
         <Content padder>
-          <Text>
-            Content goes here
-          </Text>
-          <List
-            dataArray={this.props.trips}
-            renderRow={(data, _, index) =>
-              (<ListItem
-                button
-                onPress={() => this.pickTrip(index)}
-              >
-                <Text>{data.name}</Text>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>)}
-          />
+          {trips.length == 0 ?
+            (<Text>No trips yet!</Text>)
+            :
+            (<List
+              dataArray={trips}
+              renderRow={data =>
+                (<ListItem
+                  button
+                  onPress={() => this.pickTrip(data.guid)}
+                >
+                  <Text>{data.name}</Text>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
+                </ListItem>)}
+            />)}
         </Content>
 
         {/* <Footer>
@@ -102,6 +112,9 @@ function mapDispatchToProps(dispatch) {
     pickTrip(index: number) {
       dispatch(SelectTrip(index));
     },
+    addTrip() {
+      dispatch(AddTrip());
+    },
   };
 }
 
@@ -115,6 +128,7 @@ export default StackNavigator(
     ExpenseEntry: { screen: ExpenseEntry },
     EditExpense: { screen: EditExpense },
     EditUser: { screen: EditUser },
+    UserDueSummary: { screen: UserDueSummary },
   },
   {
     initialRouteName: 'TripsInner',

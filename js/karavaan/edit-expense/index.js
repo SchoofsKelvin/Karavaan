@@ -63,6 +63,7 @@ class EditExpense extends Component {
     this.setState(state => ({ ...state, date }));
   }
   get expense() : Expense {
+    
     const exp = new Expense(this.state.name, this.state.description);
     exp.date = this.state.date;
     return exp;
@@ -181,7 +182,7 @@ class EditExpense extends Component {
 
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips[store.selectedTrip];
+  const trip = store.trips.find(t => t.guid == store.selectedTrip);
   const index = store.selectedExpense;
   const expense: Expense = trip.expenses[index];
   return { trip, expense, index };

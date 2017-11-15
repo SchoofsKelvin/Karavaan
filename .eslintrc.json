@@ -44,6 +44,7 @@
     "max-len": "off",
     "eqeqeq": "off",
     "no-fallthrough": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "no-loop-func": "off"
   }
 }
