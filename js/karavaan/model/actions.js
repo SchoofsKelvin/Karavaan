@@ -19,6 +19,10 @@ export const SELECT_EXPENSE_ENTRY = 'SELECT_EXPENSE_ENTRY';
 export const DELETE_EXPENSE_ENTRY = 'DELETE_EXPENSE_ENTRY';
 export const SAVE_EXPENSE_ENTRY = 'SAVE_EXPENSE_ENTRY';
 
+export const NEW_CURRENCY = 'NEW_CURRENCY';
+export const SET_RATE = 'SET_RATE';
+export const DELETE_CURRENCY = 'DELETE_CURRENCY';
+
 export function SetTripName(guid: string, newName: string) {
   return { type: SET_TRIP_NAME, trip: guid, newName };
 }
@@ -50,6 +54,16 @@ export function DeleteExpenseEntry(index: number) {
 }
 export function SaveExpenseEntry(user: string, valuta: Valuta) {
   return { type: SAVE_EXPENSE_ENTRY, user, valuta };
+}
+
+export function NewCurrency(currency: Currency) {
+  return { type: NEW_CURRENCY, currency };
+}
+export function SetRate(currency: string, rate: number) {
+  return { type: SET_RATE, currency, rate };
+}
+export function DeleteCurrency(currency: string) {
+  return { type: DELETE_CURRENCY, currency };
 }
 
 export function Reducer(state: StoreTemplate, action) {
@@ -127,7 +141,28 @@ export function Reducer(state: StoreTemplate, action) {
       break;
     }
 
+    case NEW_CURRENCY: {
+      const newCur = action.currency;
+      const cur = Currency.Currencies.find(c => c.tag == newCur.tag.toUpperCase());
+      if (cur) break;
+      Currency.Currencies.push(newCur);
+      break;
+    }
+    case SET_RATE: {
+      const cur = Currency.get(action.currency);
+      cur.rate = action.rate;
+      break;
+    }
+    case DELETE_CURRENCY: {
+      const cur = Currency.get(action.currency);
+      Currency.Currencies = Currency.Currencies.filter(c => c != cur);
+      break;
+    }
+
     default:
   }
+
+  newState.Currencies = Currency.Currencies;
+
   return Object.assign({}, state, newState);
 }

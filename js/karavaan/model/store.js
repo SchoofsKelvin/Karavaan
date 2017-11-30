@@ -7,7 +7,7 @@ import User from './user';
 import Expense from './expense';
 import Currency from './currency';
 import Valuta from './valuta';
-import Actions, { Reducer, SetTripName } from './actions';
+import { Reducer, SetTripName } from './actions';
 
 export type index = number;
 
@@ -17,6 +17,7 @@ export class StoreTemplate {
   selectedTrip: index = null;
   selectedExpense: index = null;
   selectedExpenseEntry: index = null;
+  Currencies: Currency[];
 }
 
 const initialState = new StoreTemplate();

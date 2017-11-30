@@ -27,9 +27,13 @@ import {
   Grid,
   Col,
   View,
+  Label,
 } from 'native-base';
 
-import { Currency } from '../model';
+import Prompt from '../prompt/prompt';
+import NewCurrencyPrompt from '../prompt/newcurrency';
+
+import { Currency, NewCurrency, SetRate, DeleteCurrency } from '../model';
 
 // import EditCurrency from '../edit-currency';
 
@@ -62,35 +66,97 @@ function idk() {
     </ListItem>);
 }
 
+const buttonMargin = { margin: '3%', width: '25%', height: 50 };
+const viewMargin = { margin: 15 };
+
 class CurrenciesInner extends Component {
-  pickCurrency(tag: string) {
-    this.props.pickCurrency(tag);
-    this.props.navigation.navigate('EditCurrency');
+  constructor(props) {
+    super(props);
+    this.state = { rate: null };
+  }
+  setRate(currency: Currency, rate: number) {
+    this.rate = rate;
+    this.forceUpdate();
+    /* this.setState(s => ({ ...s, rate }), () => {
+      rate = Number(rate) || null;
+      console.log(`New rate for ${currency.tag} is ${rate}`);
+      currency.rate = rate;
+    }); */
+    this.props.setRate(currency, Number(rate) || null);
+  }
+  fetchRate(currency: Currency) {
+    console.log('fetchRate', currency);
+    this.setState(s => ({ ...s, fetchRatePromptVisible: true, fetchRatePromptMessage: null }));
+    fetch(`https://api.fixer.io/latest?base=USD&symbols=${currency.tag.toUpperCase()}`)
+      .then(response => response.json())
+      .then(data => data.rates)
+      .then(rates => Object.entries(rates)[0])
+      .then(rates => rates && rates[1])
+      .then((rate) => {
+        if (!rate) {
+          this.setState(s => ({ ...s, fetchRatePromptMessage: `${currency.tag.toUpperCase()} doesn't seem to be an existing currency!` }));
+          return;
+        }
+        this.setRate(currency, rate);
+        this.setState(s => ({ ...s, fetchRatePromptVisible: false }));
+      })
+      .catch((error) => {
+        console.log('Fetching rate error:', error);
+        this.setState(s => ({ ...s, fetchRatePromptMessage: "Couldn't fetch the rate!" }));
+      });
   }
   addCurrency() {
-    /* this.props.addTrip();
-    this.props.navigation.navigate('TripInfo'); */
-    console.log('ADD CURRENCY PLS');
+    this.setState(s => ({ ...s, newCurrencyPromptVisible: true }));
+  }
+  deleteCurrency(currency: Currency) {
+    this.props.deleteCurrency(currency);
+  }
+  newCurrency() {
+    this.setState(s => ({ ...s, newCurrencyPromptVisible: false }));
+    console.log('newCurrency', this.newCurrencyPrompt.tag, this.newCurrencyPrompt.name);
+    this.props.newCurrency(this.newCurrencyPrompt.tag, this.newCurrencyPrompt.name);
   }
   renderHeader(currency: Currency) {
     return (
-      <Grid>
-        <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
-        <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
-        <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
-      </Grid>);
+      <View style={viewMargin}>
+        <Grid>
+          <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
+          <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
+          <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
+        </Grid>
+      </View>);
   }
   renderContent(currency: Currency) {
-    return (<View>
-      <Button><Text>Fetch rate online</Text></Button>
-      <Button><Text>Delete</Text></Button>
+    console.log('renderContent', currency, this.rate);
+    return (<View style={{ ...viewMargin, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Button style={buttonMargin} onPress={() => this.fetchRate(currency)}><Text>Fetch rate</Text></Button>
+      <Button style={buttonMargin} onPress={() => this.deleteCurrency(currency)}><Text>Delete</Text></Button>
+      <Item floatingLabel style={{ margin: 5, height: 50, width: '30%' }}>
+        <Label>Rate</Label>
+        <Input keyboardType="numeric" value={`${this.rate || ''}`} onChangeText={v => this.setRate(currency, v)} />
+      </Item>
     </View>);
   }
   render() {
-    const currencies = Currency.Currencies.filter(c => c.tag != 'USD');
+    const currencies = this.props.Currencies.filter(c => c.tag != 'USD');
     currencies.sort((a, b) => (a.tag.toLocaleUpperCase() > b.tag.toLocaleUpperCase() ? 1 : -1));
     return (
       <Container style={styles.container}>
+        <Prompt
+          title="Fetching rate"
+          visible={this.state.fetchRatePromptVisible}
+          onSubmit={() => this.setState(s => ({ ...s, fetchRatePromptVisible: false }))}
+          onRef={prompt => this.fetchRatePrompt = prompt}
+        >
+          <Text>{this.state.fetchRatePromptMessage || 'Fetching...'}</Text>
+        </Prompt>
+        <NewCurrencyPrompt
+          title="New currency"
+          visible={this.state.newCurrencyPromptVisible}
+          onCancel={() => this.setState(s => ({ ...s, newCurrencyPromptVisible: false }))}
+          onSubmit={() => this.newCurrency()}
+          onRef={prompt => this.newCurrencyPrompt = prompt}
+        />
         <Header>
           <Left>
             <Button
@@ -135,6 +201,7 @@ class CurrenciesInner extends Component {
           </View>
           <Accordion
             sections={currencies}
+            onChange={i => this.rate = currencies[i] && currencies[i].rate /* this.setState(s => ({ ...s, rate: currencies[i] && currencies[i].rate })) */}
             renderHeader={section => this.renderHeader(section)}
             renderContent={section => this.renderContent(section)}
           />
@@ -147,15 +214,19 @@ class CurrenciesInner extends Component {
 function mapStateToProps(store) {
   return {
     trips: store.trips,
+    Currencies: store.Currencies,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    pickTrip(index: number) {
-      dispatch(SelectTrip(index));
+    setRate(currency: Currency, rate: number) {
+      dispatch(SetRate(currency.tag, rate));
     },
-    addTrip() {
-      dispatch(AddTrip());
+    deleteCurrency(currency: Currency) {
+      dispatch(DeleteCurrency(currency.tag));
+    },
+    newCurrency(tag: string, name: string) {
+      dispatch(NewCurrency(new Currency(tag, name)));
     },
   };
 }
@@ -171,4 +242,3 @@ export default StackNavigator(
     headerMode: 'none',
   },
 );
-

@@ -46,7 +46,7 @@ function formatAmount(amount: number, decimals: number) {
   let r = `${Math.round(amount * d) / d}`;
   let m = r.match(/\.(\d*)/);
   if (!m) r += '.';
-  m = m ? Math.max((decimals - m[1].length), 0) : 4;
+  m = m ? Math.max((decimals - m[1].length), 0) : decimals;
   for (let i = 0; i < m; i += 1) {
     r += '0';
   }
@@ -56,9 +56,8 @@ function formatAmount(amount: number, decimals: number) {
 function valutaThing(tag: string, amount: number, trip: Trip) {
   let middle = tag == trip.mainCurrency && `${amount} ${tag}`;
   if (!middle) {
-    // const cur = trip.currencies.find(c => c.tag == tag);
-    cur = { rate: 12.345 };
-    if (cur.rate) middle = `± ${formatAmount(amount / cur.rate, 2)} ${tag}`;
+    const cur = trip.currencies.find(c => c.tag == tag);
+    if (cur.rate) middle = `± ${formatAmount(amount / cur.rate, 2)} ${trip.mainCurrency}`;
   }
   const middleStyle = middle ? textRight : textMiddle;
   return (<Grid>
@@ -86,6 +85,7 @@ function createCard(user: User, trip: Trip) {
         }
       });
   });
+  total = formatAmount(total, 2);
   return (<Card>
     <CardItem>
       <Left>
@@ -129,11 +129,11 @@ class UserDueSummary extends Component {
           </Body>
         </Header>
         <Content>
-          <Text>Hi! This is a summary for the trip {trip.name}</Text>
-          <List
-            dataArray={users}
-            renderRow={user => createCard(user, trip)}
-          />
+          {users.length ?
+            <List
+              dataArray={users}
+              renderRow={user => createCard(user, trip)}
+            /> : <Text>No expenses yet</Text>}
         </Content>
       </Container >
     );
