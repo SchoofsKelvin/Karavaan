@@ -28,8 +28,9 @@ import {
 import styles from './styles';
 import Home from './home';
 import Expenses from './expenses';
+import Users from './users';
 
-import { Trip, SelectExpense, StoreTemplate } from '../model';
+import { Trip, SelectExpense, SelectUser } from '../model';
 
 function tabHeader(name) {
   return (
@@ -41,14 +42,14 @@ function tabHeader(name) {
 
 const tabs = [
   { name: 'Home', get: ti => (<Home navigation={ti.props.navigation} />) },
-  { name: 'Expenses', get: ti => (<Expenses navigation={ti.props.navigation} />) },
-  { name: 'Users', get: () => (<Text>Users</Text>) },
+  { name: 'Expenses', get: ti => (<Expenses navigation={ti.props.navigation} getToggleSearch={t => ti.toggleSearch = t} />) },
+  { name: 'Users', get: ti => (<Users navigation={ti.props.navigation} />) },
 ];
 
 class TripInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { tab: 'Home' };
+    this.state = { tab: 'Home', searchExpenses: false };
   }
   onChangeTab({ i }) {
     this.setState({ tab: tabs[i].name });
@@ -61,8 +62,12 @@ class TripInfo extends Component {
     this.props.pickUser(null);
     this.props.navigation.navigate('EditUser');
   }
+  toggleSearchExpenses() {
+    if (this.toggleSearch) this.toggleSearch();
+  }
   render() {
     if (!this.props.trip) return (<Text>Loading...</Text>);
+    const trip: Trip = this.props.trip;
     return (
       <Container style={styles.container} >
         <Header hasTabs>
@@ -75,12 +80,12 @@ class TripInfo extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{this.props.trip.name}</Title>
+            <Title>{trip.name}</Title>
           </Body>
           <Right>
+            {this.state.tab == 'Expenses' && this.toggleSearch && <Button transparent onPress={() => this.toggleSearchExpenses()}><Icon name="search" /></Button>}
             {this.state.tab == 'Expenses' && <Button transparent onPress={() => this.addExpense()}><Icon name="add" /></Button>}
             {this.state.tab == 'Users' && <Button transparent onPress={() => this.addUser()}><Icon name="add" /></Button>}
-            <Button transparent><Icon name="more" /></Button>
           </Right>
         </Header>
         <Tabs tabBarPosition="bottom" onChangeTab={(...a) => this.onChangeTab(...a)}>
@@ -102,6 +107,9 @@ function mapDispatchToProps(dispatch) {
   return {
     pickExpense(index: number) {
       dispatch(SelectExpense(index));
+    },
+    pickUser(user: User) {
+      dispatch(SelectUser(user ? user.name : null));
     },
   };
 }

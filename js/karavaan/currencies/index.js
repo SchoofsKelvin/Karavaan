@@ -35,21 +35,11 @@ import NewCurrencyPrompt from '../prompt/newcurrency';
 
 import { Currency, NewCurrency, SetRate, DeleteCurrency } from '../model';
 
+import { formatAmount } from '../utils';
+
 // import EditCurrency from '../edit-currency';
 
 import styles from '.';
-
-function formatAmount(amount: number, decimals: number) {
-  const d = 10 ** decimals;
-  let r = `${Math.round(amount * d) / d}`;
-  let m = r.match(/\.(\d*)/);
-  if (!m) r += '.';
-  m = m ? Math.max((decimals - m[1].length), 0) : 4;
-  for (let i = 0; i < m; i += 1) {
-    r += '0';
-  }
-  return r;
-}
 
 function idk() {
   return (

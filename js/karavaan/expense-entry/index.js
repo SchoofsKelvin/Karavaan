@@ -40,7 +40,8 @@ import ValutaInput from '../input/valuta';
 class ExpenseEntry extends Component {
   constructor(props) {
     super(props);
-    BackHandler.addEventListener('ExpenseEntry', () => this.promptCancelEntry());
+    this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
+    BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
     console.log('PROPS', this.props);
     const entry: {user: User, valuta: Valuta} = this.props.entry;
     this.state = {
@@ -59,7 +60,7 @@ class ExpenseEntry extends Component {
     this.setState(state => ({ ...state, valuta }));
   }
   goBack() {
-    BackHandler.removeEventListener('ExpenseEntry');
+    BackHandler.removeEventListener('hardwareBackPress', this.boundPromptCancelEntry);
     this.props.navigation.goBack();
     return true;
   }

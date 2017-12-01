@@ -17,6 +17,7 @@ export class StoreTemplate {
   selectedTrip: index = null;
   selectedExpense: index = null;
   selectedExpenseEntry: index = null;
+  selectedUser: string = null;
   Currencies: Currency[];
 }
 
@@ -24,10 +25,12 @@ const initialState = new StoreTemplate();
 
 const expense = new Expense('Test expense 1');
 expense.addEntry('Kelvin', new Valuta('EUR', 12.49));
-expense.addEntry('Café', new Valuta('USD', 1.00));
-expense.addEntry('Café', new Valuta('EUR', 5));
+expense.addEntry('Café', new Valuta('USD', -1.00));
+expense.addEntry('Café', new Valuta('EUR', -5));
+expense.addEntry('Café', new Valuta('IDK', -123));
+expense.addEntry('Kelvin', new Valuta('IDK', 123));
 
-for (let i = 0; i < 20; i += 1) {
+for (let i = 0; i < 10; i += 1) {
   expense.addEntry('Test', new Valuta('EUR', 1));
 }
 

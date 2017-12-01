@@ -23,6 +23,10 @@ export const NEW_CURRENCY = 'NEW_CURRENCY';
 export const SET_RATE = 'SET_RATE';
 export const DELETE_CURRENCY = 'DELETE_CURRENCY';
 
+export const SELECT_USER = 'SELECT_USER';
+export const SAVE_USER = 'SAVE_USER';
+export const DELETE_USER = 'DELETE_USER';
+
 export function SetTripName(guid: string, newName: string) {
   return { type: SET_TRIP_NAME, trip: guid, newName };
 }
@@ -66,8 +70,19 @@ export function DeleteCurrency(currency: string) {
   return { type: DELETE_CURRENCY, currency };
 }
 
+export function SelectUser(name: string) {
+  return { type: SELECT_USER, name };
+}
+export function SaveUser(user: User) {
+  return { type: SAVE_USER, user };
+}
+export function DeleteUser() {
+  return { type: DELETE_USER };
+}
+
 export function Reducer(state: StoreTemplate, action) {
   console.log('Action:', action, state, `(actionId was ${state.actionId})`);
+  console.log('A', JSON.stringify({ ...state.trips[0], expenses: [] }), JSON.stringify(state.trips[0].users));
   const newState: StoreTemplate = {};
   newState.actionId = state.actionId + 1;
   switch (action.type) {
@@ -159,10 +174,42 @@ export function Reducer(state: StoreTemplate, action) {
       break;
     }
 
+    case SELECT_USER: {
+      newState.selectedUser = action.name;
+      break;
+    }
+    case SAVE_USER:
+    case DELETE_USER: {
+      const curTrip: Trip = state.trips.find(t => t.guid == state.selectedTrip);
+      const newTrip: Trip = Object.assign(new Trip(), curTrip);
+      const currentName = state.selectedUser;
+      const newUser: User = action.user;
+      if (action.type == DELETE_USER) { // delete
+        newTrip.registeredUsers = newTrip.registeredUsers.filter(u => u.name != currentName);
+      } else { // save
+        newTrip.registeredUsers = newTrip.registeredUsers.filter(u => u.name != currentName && u.name != newUser.name);
+        newTrip.registeredUsers.push(newUser);
+        if (newUser.name != currentName) {
+          newTrip.expenses = newTrip.expenses.map((e) => {
+            const exp = Object.assign(new Expense(), e);
+            exp.valutas = exp.valutas.map(ee => ({ user: ee.user == currentName ? newUser.name : ee.user, valuta: ee.valuta }));
+            return exp;
+          });
+          newState.selectedUser = newUser.name;
+        }
+      }
+      newState.trips = state.trips.map(trip => trip.guid = newTrip.guid ? newTrip : trip);
+      break;
+    }
+
     default:
   }
 
   newState.Currencies = Currency.Currencies;
 
-  return Object.assign({}, state, newState);
+  const mergedState = Object.assign({}, state, newState);
+
+  console.log('B', JSON.stringify({ ...mergedState.trips[0], expenses: [] }), JSON.stringify(mergedState.trips[0].users));
+
+  return mergedState;
 }

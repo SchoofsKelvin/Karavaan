@@ -30,62 +30,58 @@ import {
   Form,
   Label,
   Toast,
+  CheckBox,
 } from 'native-base';
 
 import styles from '.';
 
-import { Trip, Expense, User, Currency, Valuta, SaveExpense, DeleteExpense } from '../model';
+import { Trip, Expense, User, Currency, Valuta, SaveUser, DeleteUser } from '../model';
 
 import ValutaInput from '../input/valuta';
 
-class EditExpense extends Component {
+class EditUser extends Component {
   constructor(props) {
     super(props);
-    BackHandler.addEventListener('EditExpense', () => this.promptCancelEntry());
-    console.log('PROPS', this.props);
-    const expense: Expense = this.props.expense;
+    this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
+    BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
+    console.log('ADD EVENT LISTENER');
+    const user: User = this.props.user;
     this.state = {
-      name: expense && expense.name,
-      description: expense && expense.description,
-      date: expense ? expense.date : new Date(),
+      name: user && user.name,
     };
   }
   setName(name: string) {
-    console.log('SET NAME TO', name);
     this.setState(state => ({ ...state, name }));
   }
-  setDescription(description: string) {
-    console.log('SET DESCRIPTION TO', description);
-    this.setState(state => ({ ...state, description }));
-  }
-  setDate(date: Date) {
-    console.log('SET DATE TO', typeof date, date);
-    this.setState(state => ({ ...state, date }));
-  }
-  get expense() : Expense {
-    const exp = new Expense(this.state.name, this.state.description);
-    exp.date = this.state.date;
-    return exp;
+  get user() : User {
+    return new User(this.state.name, false);
   }
   goBack() {
-    BackHandler.removeEventListener('EditExpense');
+    console.log("GUYS! WE'RE GOING BACK!");
+    BackHandler.removeEventListener('hardwareBackPress', this.boundPromptCancelEntry);
     this.props.navigation.goBack();
     return true;
   }
   delete() {
     this.props.delete();
     this.goBack();
-    const { params } = this.props.navigation.state;
-    if (params.nav) params.nav.goBack();
+    this.props.navigation.goBack();
   }
   promptDelete() {
     Keyboard.dismiss();
-    if (!this.props.expense) return;
+    if (this.props.user.external) {
+      Toast.show({
+        text: 'This user is already external',
+        type: 'danger',
+        buttonText: 'Okay',
+      });
+      return;
+    }
     ActionSheet.show({
-      options: ['Delete', 'Cancel'],
+      options: ['Yes', 'Cancel'],
       cancelButtonIndex: 1,
       destructiveButtonIndex: 0,
-      title: 'Delete this expense?',
+      title: 'Make this user external?',
     }, (button) => {
       if (button == 0) this.delete();
     });
@@ -99,21 +95,32 @@ class EditExpense extends Component {
       });
       return;
     }
-    if (!this.state.date) {
-      Toast.show({
-        text: 'Missing the date',
-        type: 'danger',
-        buttonText: 'Okay',
-      });
-      return;
+    if (this.props.trip.registeredUsers.find(u => u.name == this.state.name)) {
+      if (this.props.user) {
+        if (this.props.user.name != this.state.name) {
+          ActionSheet.show({
+            options: ['Yes', 'Cancel'],
+            cancelButtonIndex: 1,
+            title: `Merge ${this.state.name} and ${this.props.user.name}?`,
+          }, button => (button == 0) && (this.props.save(this.user), this.goBack()));
+          return;
+        }
+      } else {
+        Toast.show({
+          text: 'This user already exists',
+          type: 'danger',
+          buttonText: 'Okay',
+        });
+        return;
+      }
     }
-    this.props.save(this.expense);
+    this.props.save(this.user);
     this.goBack();
   }
   promptCancelEntry() {
     Keyboard.dismiss();
-    const exp: Expense = this.props.expense;
-    if (exp && exp.equalsProps(this.expense)) {
+    const user: User = this.props.user;
+    if (user && user.name == this.state.name) {
       this.goBack();
       return true;
     }
@@ -121,15 +128,18 @@ class EditExpense extends Component {
       options: ['Save', 'Discard', 'Cancel'],
       cancelButtonIndex: 2,
       destructiveButtonIndex: 1,
-      title: (exp ? 'Save changes?' : 'Save new expense?'),
+      title: ((!user || user.external) ? 'Add user?' : 'Save changes?'),
     }, (button) => {
       if (button == 0) this.save();
       else if (button == 1) this.goBack();
     });
     return true;
   }
+  showExpenses() {
+    this.props.navigation.navigate('UserExpensesSummary');
+  }
   render() {
-    const expense = this.props.expense;
+    const user: User = this.props.user;
     return (
       <Container style={styles.container} >
         <Header hasTabs>
@@ -142,37 +152,29 @@ class EditExpense extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{expense ? expense.name : 'Add Expense'}</Title>
-            {expense && expense.description && (<Subtitle>{expense.description}</Subtitle>)}
+            <Title>{(!user || user.external) ? 'Add User' : 'Edit User'}</Title>
+            {user && (<Subtitle>{user.name}</Subtitle>)}
           </Body>
           <Right>
-            {expense && <Button transparent onPress={() => this.promptDelete()}><Icon name="trash" /></Button>}
-            {/* <Button transparent>
-              <Icon name={expense ? 'checkmark' : 'add'} onPress={() => this.save()} />
-            </Button> */}
+            {user && (<Button transparent onPress={() => this.promptDelete()}><Icon name="trash" /></Button>)}
           </Right>
         </Header>
         <Form>
           <Item floatingLabel>
             <Label>Name</Label>
-            <Input value={this.state.name} onChangeText={v => this.setName(v)} autoFocus={!expense} />
+            <Input value={this.state.name} onChangeText={v => this.setName(v)} />
           </Item>
-          <Item floatingLabel>
-            <Label>Description</Label>
-            <Input value={this.state.description} onChangeText={v => this.setDescription(v)} />
-          </Item>
-          <View style={{ margin: '5%', flexDirection: 'row' }} >
-            <Label style={{ textAlignVertical: 'center' }}>Date</Label>
-            <DatePicker
-              date={this.state.date}
-              mode="datetime"
-              style={{ marginLeft: '10%', flex: 1 }}
-              onDateChange={(str, date) => this.setDate(date)}
-            />
-          </View>
+          <Button
+            block
+            info
+            style={{ margin: 15 }}
+            onPress={() => this.showExpenses()}
+          >
+            <Text>See expenses</Text>
+          </Button>
         </Form>
-        <Button block style={{ margin: 15, marginTop: 50 }} onPress={() => this.save()}>
-          <Text>{expense ? 'Save' : 'Add'}</Text>
+        <Button block style={{ margin: '5%', bottom: 0, position: 'absolute', width: '90%' }} onPress={() => this.save()}>
+          <Text>{(!user || user.external) ? 'Add' : 'Save'}</Text>
         </Button>
       </Container >
     );
@@ -182,19 +184,19 @@ class EditExpense extends Component {
 
 function mapStateToProps(store) {
   const trip = store.trips.find(t => t.guid == store.selectedTrip);
-  const index = store.selectedExpense;
-  const expense: Expense = trip.expenses[index];
-  return { trip, expense, index };
+  const name = store.selectedUser;
+  const user = trip.users.find(u => u.name == name);
+  return { trip, name, user };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    save(expense: Expense) {
-      dispatch(SaveExpense(expense));
+    save(user: User) {
+      dispatch(SaveUser(user));
     },
     delete() {
-      dispatch(DeleteExpense());
+      dispatch(DeleteUser());
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditExpense);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

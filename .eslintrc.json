@@ -45,6 +45,7 @@
     "eqeqeq": "off",
     "no-fallthrough": "off",
     "no-return-assign": "off",
-    "no-loop-func": "off"
+    "no-loop-func": "off",
+    "no-restricted-properties": "off"
   }
 }

@@ -31,7 +31,7 @@ import ExpenseEntry from '../expense-entry';
 import EditExpense from '../edit-expense';
 import EditUser from '../edit-user';
 
-import { UserDueSummary } from '../summaries';
+import { UserDueSummary, UserExpensesSummary } from '../summaries';
 
 import styles from '.';
 
@@ -129,6 +129,7 @@ export default StackNavigator(
     EditExpense: { screen: EditExpense },
     EditUser: { screen: EditUser },
     UserDueSummary: { screen: UserDueSummary },
+    UserExpensesSummary: { screen: UserExpensesSummary },
   },
   {
     initialRouteName: 'TripsInner',

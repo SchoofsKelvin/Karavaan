@@ -1,8 +1,8 @@
 
 import UserDueSummary from './userdue';
+import UserExpensesSummary from './user-expenses';
 
-const ABC = 'ESLint being annoying';
 
 export {
-  UserDueSummary, ABC,
+  UserDueSummary, UserExpensesSummary,
 };

@@ -27,46 +27,13 @@ import {
   CardItem,
   Grid,
   Col,
+  CheckBox,
+  Label,
 } from 'native-base';
 
 import { Trip, User, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
 
-const borderThing = {
-  borderLeftWidth: 1,
-  borderRightWidth: 1,
-  borderColor: '#ddd',
-  paddingLeft: 5,
-  paddingRight: 5,
-};
-const textRight = { textAlign: 'right' };
-const textMiddle = { textAlign: 'right', color: 'grey' };
-
-function formatAmount(amount: number, decimals: number) {
-  const d = 10 ** decimals;
-  let r = `${Math.round(amount * d) / d}`;
-  let m = r.match(/\.(\d*)/);
-  if (!m) r += '.';
-  m = m ? Math.max((decimals - m[1].length), 0) : decimals;
-  for (let i = 0; i < m; i += 1) {
-    r += '0';
-  }
-  return r;
-}
-
-function valutaThing(tag: string, amount: number, trip: Trip) {
-  let middle = tag == trip.mainCurrency && `${amount} ${tag}`;
-  if (!middle) {
-    const cur = trip.currencies.find(c => c.tag == tag);
-    if (cur.rate) middle = `± ${formatAmount(amount / cur.rate, 2)} ${trip.mainCurrency}`;
-  }
-  const middleStyle = middle ? textRight : textMiddle;
-  return (<Grid>
-    <Col size={2}><Text>{tag}</Text></Col>
-    <Col size={7} style={borderThing}><Text style={middleStyle}>{middle || 'Rate unknown'}</Text></Col>
-    <Col size={3}><Text style={textRight}>{formatAmount(amount, 2)}</Text></Col>
-  </Grid>);
-}
-
+import { formatAmount, valutaEntry } from '../utils';
 
 function createCard(user: User, trip: Trip) {
   const expenses = trip.getExpensesForUser(user);
@@ -86,33 +53,41 @@ function createCard(user: User, trip: Trip) {
       });
   });
   total = formatAmount(total, 2);
+  const tColor = { color: (total == 0 && '#000') || (total < 0 ? '#0B0' : '#D00') };
   return (<Card>
     <CardItem>
       <Left>
         <Body style={{ flexDirection: 'row' }}>
           <Text style={{ fontWeight: 'bold' }}>{user.name}</Text>
-          <Right><Text>Estimated total: {total} {trip.mainCurrency}</Text></Right>
+          <Right><Text style={tColor}>Estimated total: {total} {trip.mainCurrency}</Text></Right>
         </Body>
       </Left>
     </CardItem>
     <CardItem style={{ paddingTop: 0 }}>
       <List
         dataArray={valutas}
-        renderRow={(amount, _, tag) => valutaThing(tag, amount, trip)}
+        renderRow={(amount, _, tag) => valutaEntry(tag, amount, trip)}
       />
     </CardItem>
   </Card>);
 }
 
 class UserDueSummary extends Component {
+  state = { external: false };
+  toggleExternal() {
+    this.setState(s => ({ ...s, external: !s.external }));
+  }
   render() {
     if (!this.props.trip) return (<Text>Loading...</Text>);
     const trip: Trip = this.props.trip;
-    const users = trip.users;
-    users.forEach((user) => {
+    let users = trip.users;
+    /* users.forEach((user) => {
       const expenses = trip.getExpensesForUser(user);
       console.log(user, expenses);
-    });
+    }); */
+    if (!this.state.external) {
+      users = users.filter(u => !u.external);
+    }
     return (
       <Container>
         <Header hasTabs>
@@ -127,6 +102,15 @@ class UserDueSummary extends Component {
           <Body>
             <Title>{trip.name}</Title>
           </Body>
+          <Right>
+            <Label style={{ color: '#FFF' }} button onPress={() => this.toggleExternal()}>External</Label>
+            <CheckBox
+              style={{ marginRight: 15 }}
+              checked={this.state.external}
+              color="#9AF"
+              onPress={() => this.toggleExternal()}
+            />
+          </Right>
         </Header>
         <Content>
           {users.length ?

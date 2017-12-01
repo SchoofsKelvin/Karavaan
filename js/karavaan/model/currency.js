@@ -23,7 +23,8 @@ class Currency {
 
 Currency.Currencies = [
   Currency.Default,
-  new Currency('EUR', 'Euro'),
+  new Currency('EUR', 'Euro', 0.8),
+  new Currency('IDK', "I don't know"),
 ];
 
 export default Currency;
