@@ -14,6 +14,7 @@ class Currency {
     }
 
     static get(tag: string) {
+      if (tag instanceof Currency) tag = tag.tag;
       tag = tag.toUpperCase();
       const res: Currency = this.Currencies.find(c => c.tag == tag);
       if (res) return res;

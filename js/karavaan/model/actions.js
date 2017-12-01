@@ -157,8 +157,8 @@ export function Reducer(state: StoreTemplate, action) {
     }
 
     case NEW_CURRENCY: {
-      const newCur = action.currency;
-      const cur = Currency.Currencies.find(c => c.tag == newCur.tag.toUpperCase());
+      const newCur = action.currency.toUpperCase();
+      const cur = Currency.Currencies.find(c => c.tag == newCur);
       if (cur) break;
       Currency.Currencies.push(newCur);
       break;

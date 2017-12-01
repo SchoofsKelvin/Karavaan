@@ -7,6 +7,8 @@ import {
   Grid,
 } from 'native-base';
 
+import { Trip, Valuta, Currency } from './model';
+
 export function formatAmount(amount: number, decimals: number) {
   const d = Math.pow(10, decimals);
   let r = `${Math.round(amount * d) / d}`;
@@ -31,13 +33,25 @@ const textRightNegative = { textAlign: 'right', color: '#900' };
 const textRightPositive = { textAlign: 'right', color: '#070' };
 const textRateUnknown = { textAlign: 'right', color: 'grey' };
 
-export function valutaEntry(tag: string, amount: number, trip: Trip, key) {
+export function exchangeValuta(valuta: Valuta, target: Currency) {
+  const curCurr = Currency.get(valuta.currency);
+  target = Currency.get(target);
+  if (!target) return null;
+  if (curCurr.tag == target.tag) return valuta.amount;
+  if (!curCurr.rate || !target.rate) return null;
+  return (valuta.amount * curCurr.rate) / target.rate;
+}
+
+export function valutaEntry(valuta: Valuta, trip: Trip, key) {
+  let amount = valuta.amount;
+  const tag = valuta.currency;
   let middle = tag == trip.mainCurrency && `${amount} ${tag}`;
   let middleStyle = middle ? textRight : textRateUnknown;
   if (!middle) {
     const cur = trip.currencies.find(c => c.tag == tag);
     if (cur.rate) {
-      middle = `± ${formatAmount(amount / cur.rate, 2)} ${trip.mainCurrency}`;
+      const exchangedAmount = exchangeValuta(valuta, trip.mainCurrency);
+      middle = `± ${formatAmount(exchangedAmount, 2)} ${trip.mainCurrency}`;
       middleStyle = textRight;
     }
   }

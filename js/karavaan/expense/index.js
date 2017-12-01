@@ -100,7 +100,7 @@ class ExpenseView extends Component {
                 onPress={() => this.editEntry(index)}
               >
                 <Left><Text>{user}</Text></Left>
-                <Text style={{ alignSelf: 'flex-end' }}>{valuta.amount} {valuta.currency.tag}</Text>
+                <Text style={{ alignSelf: 'flex-end' }}>{valuta.amount} {valuta.currency}</Text>
               </ListItem>)}
             renderLeftHiddenRow={(_, secId, index: number) =>
               (<Button

@@ -38,7 +38,7 @@ class ValutaInput extends Component {
     super(props);
     const cur: Valuta = this.props.value;
     this.state = {
-      tag: cur && cur.currency.tag,
+      tag: cur && cur.currency,
       amount: cur ? cur.amount : '',
     };
   }

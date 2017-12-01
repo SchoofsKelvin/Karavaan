@@ -56,7 +56,7 @@ function renderContent(user: User, trip: Trip, exp: Expense) {
   const entries = exp.valutas.filter(e => e.user == user.name);
   let key = 0;
   return (<View style={{ ...viewMargin, marginTop: 0, justifyContent: 'space-between' }}>
-    {entries.map(e => valutaEntry(e.valuta.currency.tag, e.valuta.amount, trip, key += 1))}
+    {entries.map(e => valutaEntry(e.valuta, trip, key += 1))}
   </View>);
 }
 

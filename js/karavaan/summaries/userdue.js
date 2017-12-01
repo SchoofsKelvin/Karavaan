@@ -44,8 +44,8 @@ function createCard(user: User, trip: Trip) {
       .forEach(({ valuta }) => {
         const cur = valuta.currency;
         const amount = valuta.amount;
-        valutas[cur.tag] = (valutas[cur.tag] || 0) + amount;
-        if (cur.tag == trip.mainCurrency) {
+        valutas[cur] = (valutas[cur] || 0) + amount;
+        if (cur == trip.mainCurrency) {
           total += amount;
         } else if (cur.rate) {
           total += cur.rate * amount;
@@ -66,7 +66,7 @@ function createCard(user: User, trip: Trip) {
     <CardItem style={{ paddingTop: 0 }}>
       <List
         dataArray={valutas}
-        renderRow={(amount, _, tag) => valutaEntry(tag, amount, trip)}
+        renderRow={(amount, _, tag) => valutaEntry(new Valuta(tag, amount), trip)}
       />
     </CardItem>
   </Card>);
