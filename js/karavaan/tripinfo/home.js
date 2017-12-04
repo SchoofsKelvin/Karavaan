@@ -42,8 +42,7 @@ import { Trip, Expense, Valuta, Currency, SelectExpense, SetTripName, SetTripMai
 
 const Summaries = [
   ['User Debts', 'UserDueSummary'],
-  ['A', 'UserDueSummary'],
-  ['B', 'UserDueSummary'],
+  ['Valutas', 'ValutasSummary'],
 ];
 
 class Home extends Component {

@@ -5,6 +5,7 @@ import { DrawerNavigator } from 'react-navigation';
 
 import Home from './home';
 import Trips from './trips';
+import Debug from './debug';
 import Currencies from './currencies';
 
 import SideBar from './sidebar';
@@ -15,6 +16,7 @@ const KaravaanDrawer = DrawerNavigator(
   {
     Home: { screen: Home },
     Trips: { screen: Trips },
+    Debug: { screen: Debug },
     Currencies: { screen: Currencies },
     ...kitchensinkStuff,
   },

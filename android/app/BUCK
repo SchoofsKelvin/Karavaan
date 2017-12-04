@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.nativebasekitchensink",
+    package = "ga.morle.karavaan",
 )
 
 android_resource(
     name = "res",
-    package = "com.nativebasekitchensink",
+    package = "ga.morle.karavaan",
     res = "src/main/res",
 )
 

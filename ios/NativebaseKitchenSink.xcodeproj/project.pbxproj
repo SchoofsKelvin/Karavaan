@@ -1218,8 +1218,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.market.nativebase.geekyants.nativebasekitchensink;
-				PRODUCT_NAME = NativebaseKitchenSink;
+				PRODUCT_BUNDLE_IDENTIFIER = ga.morle.karavaan;
+				PRODUCT_NAME = Karavaan;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1241,8 +1241,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.market.nativebase.geekyants.nativebasekitchensink;
-				PRODUCT_NAME = NativebaseKitchenSink;
+				PRODUCT_BUNDLE_IDENTIFIER = ga.morle.karavaan;
+				PRODUCT_NAME = Karavaan;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

@@ -22,7 +22,7 @@ import styles from './style';
 
 const drawerCover = require('../../../img/drawer-cover.png');
 
-const drawerImage = require('../../../img/logo-kitchen-sink.png');
+const drawerImage = require('../../../img/logo-banner.png');
 
 const datas = [
   {
@@ -37,6 +37,14 @@ const datas = [
     icon: 'logo-usd',
     bg: '#BE6F50',
   },
+  {
+    name: 'Debug',
+    route: 'Debug',
+    icon: 'bug',
+    bg: '#BE6F50',
+  },
+];
+const kitchensinkDatas = [
   {
     name: 'Anatomy',
     route: 'Anatomy',

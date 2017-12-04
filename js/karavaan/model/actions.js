@@ -4,7 +4,12 @@ import Currency from './currency';
 import Expense from './expense';
 import Trip from './trip';
 
-import { StoreTemplate } from './store';
+import { Save, Load } from './storage';
+import { NewStore, StoreTemplate, EmptyData, DefaultData } from './store';
+
+export const SET_STATE = 'SET_STATE';
+export const RESET_DATA = 'RESET_DATA';
+export const CLEAR_DATA = 'CLEAR_DATA';
 
 export const SET_TRIP_NAME = 'SET_TRIP_NAME';
 export const SET_TRIP_MAIN_CURRENCY = 'SET_TRIP_MAIN_CURRENCY';
@@ -27,65 +32,46 @@ export const SELECT_USER = 'SELECT_USER';
 export const SAVE_USER = 'SAVE_USER';
 export const DELETE_USER = 'DELETE_USER';
 
-export function SetTripName(guid: string, newName: string) {
-  return { type: SET_TRIP_NAME, trip: guid, newName };
-}
-export function SetTripMainCurrency(guid: string, currency: string) {
-  return { type: SET_TRIP_MAIN_CURRENCY, trip: guid, currency };
-}
-export function SelectTrip(guid: string) {
-  return { type: SELECT_TRIP, trip: guid };
-}
-export function AddTrip() {
-  return { type: ADD_TRIP };
-}
+export const SetState = (state: StoreTemplate) => ({ type: SET_STATE, state });
+export const ResetData = () => ({ type: RESET_DATA });
+export const ClearData = () => ({ type: CLEAR_DATA });
 
-export function SelectExpense(index: number) {
-  return { type: SELECT_EXPENSE, expense: index };
-}
-export function DeleteExpense() {
-  return { type: DELETE_EXPENSE };
-}
-export function SaveExpense(expense: Expense) {
-  return { type: SAVE_EXPENSE, expense };
-}
+export const SetTripName = (guid: string, newName: string) => ({ type: SET_TRIP_NAME, trip: guid, newName });
+export const SetTripMainCurrency = (guid: string, currency: string) => ({ type: SET_TRIP_MAIN_CURRENCY, trip: guid, currency });
+export const SelectTrip = (guid: string) => ({ type: SELECT_TRIP, trip: guid });
+export const AddTrip = () => ({ type: ADD_TRIP });
 
-export function SelectExpenseEntry(index: number) {
-  return { type: SELECT_EXPENSE_ENTRY, entry: index };
-}
-export function DeleteExpenseEntry(index: number) {
-  return { type: DELETE_EXPENSE_ENTRY, entry: index };
-}
-export function SaveExpenseEntry(user: string, valuta: Valuta) {
-  return { type: SAVE_EXPENSE_ENTRY, user, valuta };
-}
+export const SelectExpense = (index: number) => ({ type: SELECT_EXPENSE, expense: index });
+export const DeleteExpense = () => ({ type: DELETE_EXPENSE });
+export const SaveExpense = (expense: Expense) => ({ type: SAVE_EXPENSE, expense });
 
-export function NewCurrency(currency: Currency) {
-  return { type: NEW_CURRENCY, currency };
-}
-export function SetRate(currency: string, rate: number) {
-  return { type: SET_RATE, currency, rate };
-}
-export function DeleteCurrency(currency: string) {
-  return { type: DELETE_CURRENCY, currency };
-}
+export const SelectExpenseEntry = (index: number) => ({ type: SELECT_EXPENSE_ENTRY, entry: index });
+export const DeleteExpenseEntry = (index: number) => ({ type: DELETE_EXPENSE_ENTRY, entry: index });
+export const SaveExpenseEntry = (user: string, valuta: Valuta) => ({ type: SAVE_EXPENSE_ENTRY, user, valuta });
 
-export function SelectUser(name: string) {
-  return { type: SELECT_USER, name };
-}
-export function SaveUser(user: User) {
-  return { type: SAVE_USER, user };
-}
-export function DeleteUser() {
-  return { type: DELETE_USER };
-}
+export const NewCurrency = (currency: Currency) => ({ type: NEW_CURRENCY, currency });
+export const SetRate = (currency: string, rate: number) => ({ type: SET_RATE, currency, rate });
+export const DeleteCurrency = (currency: string) => ({ type: DELETE_CURRENCY, currency });
 
-export function Reducer(state: StoreTemplate, action) {
+export const SelectUser = (name: string) => ({ type: SELECT_USER, name });
+export const SaveUser = (user: User) => ({ type: SAVE_USER, user });
+export const DeleteUser = () => ({ type: DELETE_USER });
+
+export function Reducer(state: StoreTemplate = EmptyData(), action) {
   console.log('Action:', action, state, `(actionId was ${state.actionId})`);
-  console.log('A', JSON.stringify({ ...state.trips[0], expenses: [] }), JSON.stringify(state.trips[0].users));
   const newState: StoreTemplate = {};
   newState.actionId = state.actionId + 1;
   switch (action.type) {
+    case SET_STATE:
+      state = action.state;
+      break;
+    case CLEAR_DATA:
+      state = EmptyData();
+      break;
+    case RESET_DATA:
+      state = DefaultData();
+      break;
+
     case SET_TRIP_NAME: {
       const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
@@ -209,7 +195,13 @@ export function Reducer(state: StoreTemplate, action) {
 
   const mergedState = Object.assign({}, state, newState);
 
-  console.log('B', JSON.stringify({ ...mergedState.trips[0], expenses: [] }), JSON.stringify(mergedState.trips[0].users));
+  if (mergedState.save) Save(mergedState);
 
   return mergedState;
 }
+
+const Store = NewStore(Reducer);
+
+Load().then(state => (state.save = true) && Store.dispatch(new SetState(state)));
+
+export default Store;

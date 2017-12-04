@@ -17,6 +17,9 @@ class User {
       if (user1.name.toLowerCase() != user2.name.toLowerCase()) return false;
       return user1.external == user2.external;
     }
+    static fromObject(data: User): User {
+      return Object.assign(new User(), data);
+    }
 }
 
 export default User;

@@ -31,6 +31,13 @@ class Trip {
       if (name instanceof User) name = name.name;
       return this.expenses.filter((expense: Expense) => expense.valutas.find(({ user }) => user == name));
     }
+    static fromObject(data: Trip) {
+      const trip: Trip = new Trip();
+      Object.assign(trip, data);
+      trip.expenses = data.expenses.map(Expense.fromObject);
+      trip.registeredUsers = data.registeredUsers.map(User.fromObject);
+      return trip;
+    }
 }
 
 export default Trip;

@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "presentation": {
+        "reveal": "always",
+        "panel": "new"
+    },
+    "tasks": [
+        {
+            "label": "React Devtools",
+            "group": "test",
+            "type": "shell",
+            "windows": {
+                "command": "adb reverse tcp:8097 tcp:8097; if ($?) {react-devtools}"
+            }
+        },
+        {
+            "label": "Build APK Debug",
+            "group": "build",
+            "type": "shell",
+            "windows": {
+                "command": "cd android; if($?) {./gradlew assembleDebug} if ($?) {adb install -r ./app/build/outputs/apk/app-debug.apk}"
+            },
+            "linux": {
+                "command": "cd android && ./gradlew assembleDebug"
+            }
+        },
+        {
+            "label": "Build APK Release",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "type": "shell",
+            "windows": {
+                "command": "cd android; if($?) {./gradlew assembleRelease}; if ($?) {adb install -r ./app/build/outputs/apk/app-release.apk}"
+            },
+            "linux": {
+                "command": "cd android && ./gradlew assembleRelease"
+            }
+        },
+        {
+            "label": "Generate Android Bundle",
+            "group": "build",
+            "type": "shell",
+            "command": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/main.jsbundle"
+        },
+        {
+            "label": "Generate iOS Bundle",
+            "group": "build",
+            "type": "shell",
+            "command": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle"
+        }
+    ]
+}

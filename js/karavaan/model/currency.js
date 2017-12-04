@@ -8,7 +8,7 @@ class Currency {
     rate: number;
 
     constructor(tag: string, name: string = '', rate: number) {
-      this.tag = tag.toUpperCase();
+      this.tag = tag && tag.toUpperCase();
       this.name = name;
       this.rate = rate;
     }
@@ -19,6 +19,9 @@ class Currency {
       const res: Currency = this.Currencies.find(c => c.tag == tag);
       if (res) return res;
       throw new Error(`Currency '${tag}' isn't registered`);
+    }
+    static fromObject(data: Currency): Currency {
+      return Object.assign(new Currency(), data);
     }
 }
 

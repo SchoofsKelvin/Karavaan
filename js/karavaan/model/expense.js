@@ -7,7 +7,7 @@ class Expense {
     name: string;
     description: string;
     date: Date = new Date();
-    valutas: [ ExpenseEntry ] = [];
+    valutas: ExpenseEntry[] = [];
     constructor(name: string, description: string = null) {
       this.name = name;
       this.description = description;
@@ -38,6 +38,9 @@ class Expense {
       if (entry1.user.toLowerCase() != entry2.user.toLowerCase()) return false;
       if (entry1.valuta == entry2.valuta) return true;
       return entry1.valuta.equals(entry2.valuta);
+    }
+    static fromObject(data: Expense): Expense {
+      return Object.assign(new Expense(), data, { date: new Date(data.date) });
     }
 }
 

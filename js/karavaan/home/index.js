@@ -1,37 +1,36 @@
+
 import React, { Component } from 'react';
-import { Image, View, StatusBar } from 'react-native';
+import { Image, View, StatusBar, Dimensions } from 'react-native';
 
 import { Container, Button, H3, Text, Header, Title, Body, Left, Right } from 'native-base';
 
-import styles from './styles';
+import getStyle from './styles';
 
 const launchscreenBg = require('../../../img/launchscreen-bg.png');
-const launchscreenLogo = require('../../../img/logo-kitchen-sink.png');
+const launchscreenLogo = require('../../../img/logo.png');
+const launchscreenTitle = require('../../../img/title.png');
 
 class Home extends Component {
-	// eslint-disable-line
-
+  componentWillMount() {
+    this.dimensionHandler = () => this.forceUpdate();
+    Dimensions.addEventListener('change', this.dimensionHandler);
+  }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.dimensionHandler);
+  }
   render() {
+    const styles = getStyle();
     return (
       <Container>
-        <StatusBar barStyle="light-content" />
-        <Image source={launchscreenBg} style={styles.imageContainer}>
-          <View style={styles.logoContainer}>
-            <Image source={launchscreenLogo} style={styles.logo} />
-          </View>
-          <View
-            style={{
-              alignItems: 'center',
-              marginBottom: 50,
-              backgroundColor: 'transparent',
-            }}
-          >
-            <H3 style={styles.text}>Karavaan</H3>
-            <View style={{ marginTop: 8 }} />
-            <H3 style={styles.text}>(Under Development)</H3>
-            <View style={{ marginTop: 8 }} />
-          </View>
-          <View style={{ marginBottom: 80 }}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <Image source={launchscreenBg} style={styles.imageContainer} resizeMode="cover">
+          <Container style={styles.logoContainer}>
+            <Image source={launchscreenLogo} style={styles.logo} resizeMode="contain" />
+            <View style={styles.h3view}>
+              <Image source={launchscreenTitle} style={styles.title} resizeMode="contain" />
+            </View>
+          </Container>
+          <Container style={styles.buttons}>
             <Button
               style={{ backgroundColor: '#6FAF98', alignSelf: 'center', marginBottom: 20 }}
               onPress={() => this.props.navigation.navigate('DrawerOpen')}
@@ -44,7 +43,7 @@ class Home extends Component {
             >
               <Text>See Trips</Text>
             </Button>
-          </View>
+          </Container>
         </Image>
       </Container>
     );

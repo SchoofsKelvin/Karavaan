@@ -55,10 +55,17 @@ export function valutaEntry(valuta: Valuta, trip: Trip, key) {
       middleStyle = textRight;
     }
   }
+  let textRightStyle = textRight;
+  if (amount < 0) {
+    amount = -amount;
+    textRightStyle = textRightPositive;
+  } else if (amount > 0) {
+    textRightStyle = textRightNegative;
+  }
   return (<Grid key={key}>
     <Col size={2}><Text>{tag}</Text></Col>
     <Col size={7} style={borderThing}><Text style={middleStyle}>{middle || 'Rate unknown'}</Text></Col>
-    <Col size={3}><Text style={amount < 0 ? textRightPositive : textRightNegative}>{formatAmount(amount, 2)}</Text></Col>
+    <Col size={3}><Text style={textRightStyle}>{formatAmount(amount, 2)}</Text></Col>
   </Grid>);
 }
 
