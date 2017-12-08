@@ -31,7 +31,6 @@ export default function getStyle() {
   const window = Dimensions.get('window');
   deviceWidth = window.width;
   deviceHeight = window.height;
-  console.log(deviceWidth, ',', deviceHeight);
   const isLandscape = deviceWidth > deviceHeight;
   const f = (isLandscape ? landscape : portrait)();
   const s = standard();

@@ -67,9 +67,11 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
       break;
     case CLEAR_DATA:
       state = EmptyData();
+      state.save = true;
       break;
     case RESET_DATA:
       state = DefaultData();
+      state.save = true;
       break;
 
     case SET_TRIP_NAME: {
@@ -106,7 +108,7 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
 
     case SAVE_EXPENSE:
     case DELETE_EXPENSE: {
-      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
+      const curTrip: Trip = state.trips.find(t => t.guid == state.selectedTrip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       newTrip.expenses = curTrip.expenses.slice(0);
       if (action.type == DELETE_EXPENSE) {
@@ -126,7 +128,7 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
 
     case SAVE_EXPENSE_ENTRY:
     case DELETE_EXPENSE_ENTRY: {
-      const curTrip: Trip = state.trips.find(t => t.guid == action.trip);
+      const curTrip: Trip = state.trips.find(t => t.guid == state.selectedTrip);
       const newTrip: Trip = Object.assign(new Trip(), curTrip);
       const currentExpense: Expense = newTrip.expenses[state.selectedExpense];
       const newExpense = Object.assign(new Expense(), currentExpense);

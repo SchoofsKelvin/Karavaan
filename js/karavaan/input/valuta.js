@@ -66,7 +66,7 @@ class ValutaInput extends Component {
     return (
       <View style={{ height: 70 }} >
         <Grid>
-          <Col size={1} style={{ backgroundColor: '#00CE9F', paddingBottom: 10 }}>
+          <Col size={1} style={{ paddingBottom: 10 }}>
             <Form>
               <Item floatingLabel style={{ marginTop: 0, marginRight: 15 }}>
                 <Label style={color}>Amount</Label>
@@ -74,7 +74,7 @@ class ValutaInput extends Component {
               </Item>
             </Form>
           </Col>
-          <Col size={1} style={{ backgroundColor: '#635DB7' }} >
+          <Col size={1} style={{ paddingTop: 20 }} >
             <CurrencyInput value={this.state.tag} onValueChange={val => this.setCurrency(val)} />
           </Col>
         </Grid>

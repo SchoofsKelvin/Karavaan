@@ -12,6 +12,6 @@ import KaravaanDrawer from './karavaan/KaravaanDrawer';
 export default () =>
   (<Provider store={KaravaanStore}>
     <Root>
-      <KaravaanDrawer />{ /* AppNavigator */ }
+      <KaravaanDrawer onNavigationStateChange={null} />{ /* AppNavigator */ }
     </Root>
   </Provider>);

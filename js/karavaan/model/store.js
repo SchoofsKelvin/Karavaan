@@ -9,12 +9,13 @@ import Currency from './currency';
 import Valuta from './valuta';
 
 export type index = number;
+export type guid = string;
 
 export class StoreTemplate {
   save: boolean = false;
   actionId: index = 0;
   trips: Trip[] = [];
-  selectedTrip: index = null;
+  selectedTrip: guid = null;
   selectedExpense: index = null;
   selectedExpenseEntry: index = null;
   selectedUser: string = null;

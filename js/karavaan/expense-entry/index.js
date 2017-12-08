@@ -35,6 +35,7 @@ import styles from '.';
 
 import { Trip, Expense, User, Currency, Valuta, SaveExpenseEntry } from '../model';
 
+import UserInput from '../input/user';
 import ValutaInput from '../input/valuta';
 
 class ExpenseEntry extends Component {
@@ -52,6 +53,7 @@ class ExpenseEntry extends Component {
   }
   setUser(user: string) {
     console.log('SET USER TO', user);
+    if (user instanceof User) user = user.name;
     user = user && user.trim();
     this.setState(state => ({ ...state, user }));
   }
@@ -132,10 +134,9 @@ class ExpenseEntry extends Component {
           </Right>
         </Header>
         <Form>
-          <Item floatingLabel>
-            <Label>User</Label>
-            <Input value={this.state.user} onChangeText={v => this.setUser(v)} autoFocus={!expense} />
-          </Item>
+          <View>
+            <UserInput value={this.state.user} onValueChange={v => this.setUser(v)} />
+          </View>
           <ValutaInput value={this.state.valuta} onValueChange={v => this.setValuta(v)} />
         </Form>
         <Button block style={{ margin: 15, marginTop: 50 }} onPress={() => this.save()}>
