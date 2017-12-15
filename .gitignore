@@ -1,3 +1,7 @@
+
+# Visual Studio Code
+*.code-workspace
+
 # OSX
 #
 .DS_Store
