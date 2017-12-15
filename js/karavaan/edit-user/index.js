@@ -37,14 +37,11 @@ import styles from '.';
 
 import { Trip, Expense, User, Currency, Valuta, SaveUser, DeleteUser } from '../model';
 
-import ValutaInput from '../input/valuta';
-
 class EditUser extends Component {
   constructor(props) {
     super(props);
     this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
     BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
-    console.log('ADD EVENT LISTENER');
     const user: User = this.props.user;
     this.state = {
       name: user && user.name,
@@ -53,11 +50,10 @@ class EditUser extends Component {
   setName(name: string) {
     this.setState(state => ({ ...state, name }));
   }
-  get user() : User {
+  get user(): User {
     return new User(this.state.name, false);
   }
   goBack() {
-    console.log("GUYS! WE'RE GOING BACK!");
     BackHandler.removeEventListener('hardwareBackPress', this.boundPromptCancelEntry);
     this.props.navigation.goBack();
     return true;

@@ -39,7 +39,7 @@ export function exchangeValuta(valuta: Valuta, target: Currency) {
   if (!target) return null;
   if (curCurr.tag == target.tag) return valuta.amount;
   if (!curCurr.rate || !target.rate) return null;
-  return (valuta.amount * curCurr.rate) / target.rate;
+  return (valuta.amount / curCurr.rate) * target.rate;
 }
 
 export function valutaEntry(valuta: Valuta, trip: Trip, key) {

@@ -36,8 +36,6 @@ import styles from '.';
 
 import { Trip, Expense, User, Currency, Valuta, SaveExpense, DeleteExpense } from '../model';
 
-import ValutaInput from '../input/valuta';
-
 class EditExpense extends Component {
   constructor(props) {
     super(props);
@@ -63,8 +61,7 @@ class EditExpense extends Component {
     console.log('SET DATE TO', typeof date, date);
     this.setState(state => ({ ...state, date }));
   }
-  get expense() : Expense {
-    
+  get expense(): Expense {
     const exp = new Expense(this.state.name, this.state.description);
     exp.date = this.state.date;
     return exp;

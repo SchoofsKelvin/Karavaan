@@ -58,7 +58,6 @@ class ValutaInput extends Component {
   }
   setCurrency(tag: string) {
     if (tag instanceof Currency) tag = tag.tag;
-    if (tag == '+') throw new Error('TODO');
     this.setState(state => ({ ...state, tag }), () => { this.value = this.value; });
   }
   render() {
@@ -75,7 +74,7 @@ class ValutaInput extends Component {
             </Form>
           </Col>
           <Col size={1} style={{ paddingTop: 20 }} >
-            <CurrencyInput value={this.state.tag} onValueChange={val => this.setCurrency(val)} />
+            <CurrencyInput value={this.state.tag} onValueChange={val => this.setCurrency(val)} navigation={this.props.navigation} />
           </Col>
         </Grid>
       </View>

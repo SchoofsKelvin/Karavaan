@@ -31,13 +31,13 @@ import {
   Label,
 } from 'native-base';
 
-import { Trip, User, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
+import { Trip, User, Currency, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
 
 import { formatAmount, valutaEntry } from '../utils';
 
 function createCard(user: User, trip: Trip) {
   const expenses = trip.getExpensesForUser(user);
-  const valutas: {[string]: number} = {};
+  const valutas: { [string]: number } = {};
   let total = 0;
   expenses.forEach((expense) => {
     expense.valutas.filter(e => e.user == user.name)
@@ -82,7 +82,7 @@ class ValutasSummary extends Component {
     const trip: Trip = this.props.trip;
     let valutas = trip.currencies.map(c => new Valuta(c));
     trip.expenses.forEach((expense) => {
-      expense.valutas.forEach(({ user, valuta } : {user:string, valuta: Valuta}) => {
+      expense.valutas.forEach(({ user, valuta }: { user: string, valuta: Valuta }) => {
         if (!this.state.external && !trip.registeredUsers.find(u => u.name == user)) return;
         const c = valutas.find(v => v.currency == valuta.currency);
         if (!c) throw new Error('What...');

@@ -33,11 +33,11 @@ import {
 
 import { Trip, User, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
 
-import { formatAmount, valutaEntry } from '../utils';
+import { formatAmount, valutaEntry, exchangeValuta } from '../utils';
 
 function createCard(user: User, trip: Trip) {
   const expenses = trip.getExpensesForUser(user);
-  const valutas: {[string]: number} = {};
+  const valutas: { [string]: number } = {};
   let total = 0;
   expenses.forEach((expense) => {
     expense.valutas.filter(e => e.user == user.name)
@@ -45,11 +45,8 @@ function createCard(user: User, trip: Trip) {
         const cur = valuta.currency;
         const amount = valuta.amount;
         valutas[cur] = (valutas[cur] || 0) + amount;
-        if (cur == trip.mainCurrency) {
-          total += amount;
-        } else if (cur.rate) {
-          total += cur.rate * amount;
-        }
+        const exch = exchangeValuta(valuta, trip.mainCurrency);
+        if (exch) total += exch;
       });
   });
   total = formatAmount(total, 2);

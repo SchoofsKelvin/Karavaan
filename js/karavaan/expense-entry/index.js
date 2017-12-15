@@ -33,7 +33,7 @@ import {
 
 import styles from '.';
 
-import { Trip, Expense, User, Currency, Valuta, SaveExpenseEntry } from '../model';
+import { Trip, Expense, User, Currency, Valuta, SaveExpenseEntry, DeleteExpenseEntry } from '../model';
 
 import UserInput from '../input/user';
 import ValutaInput from '../input/valuta';
@@ -44,7 +44,7 @@ class ExpenseEntry extends Component {
     this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
     BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
     console.log('PROPS', this.props);
-    const entry: {user: User, valuta: Valuta} = this.props.entry;
+    const entry: { user: User, valuta: Valuta } = this.props.entry;
     this.state = {
       entry,
       user: entry && entry.user,
@@ -86,7 +86,7 @@ class ExpenseEntry extends Component {
     this.props.save(this.state.user, this.state.valuta);
     this.goBack();
   }
-  equalEntry(entry: {user: User, valuta: Valuta}) {
+  equalEntry(entry: { user: User, valuta: Valuta }) {
     const user = this.state.user;
     const valuta = this.state.valuta;
     return Expense.areEntriesEqual(entry, { user, valuta });
@@ -109,6 +109,18 @@ class ExpenseEntry extends Component {
     });
     return true;
   }
+  promptDelete() {
+    ActionSheet.show({
+      options: ['Delete', 'Cancel'],
+      cancelButtonIndex: 1,
+      destructiveButtonIndex: 0,
+      title: 'Delete this entry?',
+    }, (button) => {
+      if (button != 0) return;
+      this.props.deleteEntry(this.props.entryIndex);
+      this.goBack();
+    });
+  }
   render() {
     const expense = this.props.expense;
     const entry = this.props.entry;
@@ -124,20 +136,18 @@ class ExpenseEntry extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{expense ? expense.name : 'New entry'}</Title>
-            {expense && expense.description && (<Subtitle>{expense.description}</Subtitle>)}
+            <Title>New entry</Title>
+            {expense && expense.name && (<Subtitle>for {expense.name}</Subtitle>)}
           </Body>
           <Right>
-            <Button transparent>
-              {/* <Icon name={entry ? 'checkmark' : 'add'} onPress={() => this.save()} /> */}
-            </Button>
+            {entry && <Button transparent onPress={() => this.promptDelete()}><Icon style={{ color: '#fff' }} name="trash" /></Button>}
           </Right>
         </Header>
         <Form>
           <View>
             <UserInput value={this.state.user} onValueChange={v => this.setUser(v)} />
           </View>
-          <ValutaInput value={this.state.valuta} onValueChange={v => this.setValuta(v)} />
+          <ValutaInput value={this.state.valuta} onValueChange={v => this.setValuta(v)} navigation={this.props.navigation} />
         </Form>
         <Button block style={{ margin: 15, marginTop: 50 }} onPress={() => this.save()}>
           <Text>{entry ? 'Save' : 'Add'}</Text>
@@ -152,13 +162,17 @@ function mapStateToProps(store) {
   const trip = store.trips.find(t => t.guid == store.selectedTrip);
   const index = store.selectedExpense;
   const expense: Expense = trip.expenses[index];
-  const entry = expense.valutas[store.selectedExpenseEntry];
-  return { trip, expense, index, entry };
+  const entryIndex = store.selectedExpenseEntry;
+  const entry = expense.valutas[entryIndex];
+  return { trip, expense, index, entry, entryIndex };
 }
 function mapDispatchToProps(dispatch) {
   return {
     save(user: string, valuta: Valuta) {
       dispatch(SaveExpenseEntry(user, valuta));
+    },
+    deleteEntry(index: number) {
+      dispatch(DeleteExpenseEntry(index));
     },
   };
 }

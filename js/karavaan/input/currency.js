@@ -50,10 +50,20 @@ class CurrencyInput extends Component {
   }
   setValue(value: string) {
     if (value instanceof Currency) value = value.tag;
-    if (value == '+') throw new Error('TODO');
+    if (value == '+') {
+      this.props.navigation.navigate('Currencies');
+      this.setState(state => ({ ...state, value: this.props.value }));
+      return;
+    }
     this.setState(state => ({ ...state, value }), () => { this.value = this.value; });
   }
   render() {
+    const elements = this.props.currencies.map((cur: Currency) => (
+      <Picker.Item key={cur.tag} label={cur.tag} value={cur.tag} color="black" />
+    ));
+    if (this.props.navigation) {
+      // elements.push(<Picker.Item key="+" label="New" value="+" color="lightgray" />);
+    }
     return (
       <View style={{ height: 50, width: '100%', paddingBottom: 10, ...this.props.style }}>
         <Grid>
@@ -62,7 +72,7 @@ class CurrencyInput extends Component {
               <Label>{this.props.label}</Label>
             </Col>
           )}
-          <Col size={1} style={{ }} >
+          <Col size={1} style={{}} >
             <Picker
               mode="dropdown"
               placeholder="Currency"
@@ -70,10 +80,7 @@ class CurrencyInput extends Component {
               style={{ height: '100%', alignItems: 'flex-end' }}
               onValueChange={val => this.setValue(val)}
             >
-              {this.props.currencies.map((cur: Currency) => (
-                <Picker.Item key={cur.tag} label={cur.tag} value={cur.tag} color="black" />
-              ))}
-              <Picker.Item label="New" value="+" color="lightgray" />
+              {elements}
             </Picker>
           </Col>
         </Grid>

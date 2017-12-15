@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, View, StatusBar } from 'react-native';
+import { Image, View, StatusBar, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Container, Button, H3, Text, Header, Title, Body, Left, Right } from 'native-base';
@@ -29,9 +29,11 @@ function mapDispatchToProps(dispatch) {
   return {
     clearData() {
       dispatch(ClearData());
+      BackHandler.exitApp();
     },
     resetData() {
       dispatch(ResetData());
+      BackHandler.exitApp();
     },
   };
 }

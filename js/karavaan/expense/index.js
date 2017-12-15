@@ -125,7 +125,7 @@ class ExpenseView extends Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-              ><Text>{rowId}</Text>
+              >
                 <Icon active name="trash" />
               </Button>)}
             leftOpenValue={75}

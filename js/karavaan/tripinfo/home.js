@@ -33,7 +33,6 @@ import {
   CardItem,
 } from 'native-base';
 
-import ValutaInput from '../input/valuta';
 import CurrencyInput from '../input/currency';
 
 import styles from '.';
