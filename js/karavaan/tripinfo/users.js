@@ -1,41 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
 
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
   Icon,
   List,
   ListItem,
   Text,
-  H3,
-  Left,
   Right,
-  Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
-  ActionSheet,
-  Subtitle,
-  Form,
-  Label,
-  Toast,
-  Card,
-  CardItem,
 } from 'native-base';
 
-import styles from '.';
-
-import { User, Trip, Expense, Valuta, Currency, SelectUser } from '../model';
+import { User, Trip, SelectUser } from '../model';
 
 class Users extends Component {
   pickUser(user: User) {

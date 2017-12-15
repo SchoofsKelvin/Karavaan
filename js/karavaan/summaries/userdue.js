@@ -9,29 +9,17 @@ import {
   Button,
   Icon,
   List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
   Card,
   CardItem,
-  Grid,
-  Col,
   CheckBox,
   Label,
 } from 'native-base';
 
-import { Trip, User, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
+import { Trip, User, Valuta, StoreTemplate } from '../model';
 
 import { formatAmount, valutaEntry, exchangeValuta } from '../utils';
 

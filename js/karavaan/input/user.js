@@ -1,38 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { View as NativeView } from 'react-native';
-
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
   Icon,
-  List,
-  ListItem,
-  Text,
-  H3,
-  Left,
-  Right,
-  Body,
   Input,
-  Footer,
-  FooterTab,
-  Picker,
   View,
   Item,
   Label,
-  Grid,
-  Col,
   Form,
 } from 'native-base';
 
-import CurrencyInput from './currency';
 import UserListPrompt from '../prompt/userlistprompt';
 
-import { Trip, Currency, User } from '../model';
+import { User } from '../model';
 
 class UserInput extends Component {
   constructor(props) {

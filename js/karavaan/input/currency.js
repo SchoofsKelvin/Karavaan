@@ -1,35 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { View as NativeView } from 'react-native';
-
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  H3,
-  Left,
-  Right,
-  Body,
-  Input,
-  Footer,
-  FooterTab,
   Picker,
   View,
-  Item,
   Label,
   Grid,
   Col,
-  Form,
 } from 'native-base';
 
-import { Trip, Currency, Valuta } from '../model';
+import { Currency, Valuta } from '../model';
 
 class CurrencyInput extends Component {
   constructor(props) {

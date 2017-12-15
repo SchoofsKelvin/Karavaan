@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Image, View, StatusBar, Dimensions } from 'react-native';
 
-import { Container, Button, H3, Text, Header, Title, Body, Left, Right } from 'native-base';
+import { Container, Button, Text } from 'native-base';
 
 import getStyle from './styles';
 

@@ -1,29 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, BackHandler, Keyboard } from 'react-native';
+import { BackHandler, Keyboard } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
 import {
   Container,
   Header,
   Title,
-  Content,
   Button,
   Icon,
-  List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
   View,
   ActionSheet,
   Subtitle,
@@ -32,16 +23,13 @@ import {
   Toast,
 } from 'native-base';
 
-import styles from '.';
-
-import { Trip, Expense, User, Currency, Valuta, SaveExpense, DeleteExpense } from '../model';
+import { Expense, SaveExpense, DeleteExpense } from '../model';
 
 class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
     BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
-    console.log('PROPS', this.props);
     const expense: Expense = this.props.expense;
     this.state = {
       name: expense && expense.name,
@@ -50,15 +38,12 @@ class EditExpense extends Component {
     };
   }
   setName(name: string) {
-    console.log('SET NAME TO', name);
     this.setState(state => ({ ...state, name }));
   }
   setDescription(description: string) {
-    console.log('SET DESCRIPTION TO', description);
     this.setState(state => ({ ...state, description }));
   }
   setDate(date: Date) {
-    console.log('SET DATE TO', typeof date, date);
     this.setState(state => ({ ...state, date }));
   }
   get expense(): Expense {
@@ -130,7 +115,7 @@ class EditExpense extends Component {
   render() {
     const expense = this.props.expense;
     return (
-      <Container style={styles.container} >
+      <Container style={{ backgroundColor: '#fff' }} >
         <Header hasTabs>
           <Left>
             <Button

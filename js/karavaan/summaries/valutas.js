@@ -9,32 +9,19 @@ import {
   Button,
   Icon,
   List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
-  Card,
-  CardItem,
-  Grid,
-  Col,
   CheckBox,
   Label,
 } from 'native-base';
 
-import { Trip, User, Currency, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
+import { Trip, Valuta, SelectExpense, StoreTemplate } from '../model';
 
-import { formatAmount, valutaEntry } from '../utils';
+import { valutaEntry } from '../utils';
 
+/*
 function createCard(user: User, trip: Trip) {
   const expenses = trip.getExpensesForUser(user);
   const valutas: { [string]: number } = {};
@@ -71,6 +58,7 @@ function createCard(user: User, trip: Trip) {
     </CardItem>
   </Card>);
 }
+*/
 
 class ValutasSummary extends Component {
   state = { external: false };

@@ -58,7 +58,7 @@ export const SaveUser = (user: User) => ({ type: SAVE_USER, user });
 export const DeleteUser = () => ({ type: DELETE_USER });
 
 export function Reducer(state: StoreTemplate = EmptyData(), action) {
-  console.log('Action:', action, state, `(actionId was ${state.actionId})`);
+  // console.log('Action:', action, state, `(actionId was ${state.actionId})`);
   const newState: StoreTemplate = {};
   newState.actionId = state.actionId + 1;
   switch (action.type) {

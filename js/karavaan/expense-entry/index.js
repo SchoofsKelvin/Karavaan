@@ -1,39 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, BackHandler, Keyboard } from 'react-native';
+import { BackHandler, Keyboard } from 'react-native';
 
 import {
   Container,
   Header,
   Title,
-  Content,
   Button,
   Icon,
-  List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
   View,
   ActionSheet,
   Subtitle,
   Form,
-  Label,
   Toast,
 } from 'native-base';
 
-import styles from '.';
-
-import { Trip, Expense, User, Currency, Valuta, SaveExpenseEntry, DeleteExpenseEntry } from '../model';
+import { Expense, User, Valuta, SaveExpenseEntry, DeleteExpenseEntry } from '../model';
 
 import UserInput from '../input/user';
 import ValutaInput from '../input/valuta';
@@ -43,7 +29,6 @@ class ExpenseEntry extends Component {
     super(props);
     this.boundPromptCancelEntry = this.promptCancelEntry.bind(this);
     BackHandler.addEventListener('hardwareBackPress', this.boundPromptCancelEntry);
-    console.log('PROPS', this.props);
     const entry: { user: User, valuta: Valuta } = this.props.entry;
     this.state = {
       entry,
@@ -52,13 +37,11 @@ class ExpenseEntry extends Component {
     };
   }
   setUser(user: string) {
-    console.log('SET USER TO', user);
     if (user instanceof User) user = user.name;
     user = user && user.trim();
     this.setState(state => ({ ...state, user }));
   }
   setValuta(valuta: Valuta) {
-    console.log('SET VALUTA TO', valuta);
     this.setState(state => ({ ...state, valuta }));
   }
   goBack() {
@@ -125,7 +108,7 @@ class ExpenseEntry extends Component {
     const expense = this.props.expense;
     const entry = this.props.entry;
     return (
-      <Container style={styles.container} >
+      <Container style={{ backgroundColor: '#fff' }} >
         <Header hasTabs>
           <Left>
             <Button

@@ -32,7 +32,7 @@ import NHSpinner from './components/spinner/';
 import NHTab from './components/tab/';
 import NHThumbnail from './components/thumbnail/';
 import NHTypography from './components/typography/';
-import SplashPage from './components/splashscreen/';
+// import SplashPage from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import Segment from './components/segment';
 import Toast from './components/toast';

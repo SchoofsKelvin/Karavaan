@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import { Image, View, StatusBar, BackHandler } from 'react-native';
+import { View, StatusBar, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
-import { Container, Button, H3, Text, Header, Title, Body, Left, Right } from 'native-base';
+import { Container, Button, Text, Header, Title, Body } from 'native-base';
 
 import { ClearData, ResetData } from '../model';
 

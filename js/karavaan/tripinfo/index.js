@@ -5,27 +5,17 @@ import {
   Container,
   Header,
   Title,
-  Content,
   Button,
   Icon,
-  List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
   Tab,
   Tabs,
   TabHeading,
-  View,
 } from 'native-base';
 
-import styles from './styles';
 import Home from './home';
 import Expenses from './expenses';
 import Users from './users';
@@ -69,7 +59,7 @@ class TripInfo extends Component {
     if (!this.props.trip) return (<Text>Loading...</Text>);
     const trip: Trip = this.props.trip;
     return (
-      <Container style={styles.container} >
+      <Container style={{ backgroundColor: '#fff' }} >
         <Header hasTabs>
           <Left>
             <Button

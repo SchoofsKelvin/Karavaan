@@ -1,34 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import DatePicker from 'react-native-datepicker';
-
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
   Icon,
   List,
   ListItem,
   Text,
-  H3,
-  Left,
   Right,
-  Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
   View,
-  Label,
 } from 'native-base';
-
-import styles from '.';
 
 import { Trip, Expense, SelectExpense } from '../model';
 
@@ -60,7 +42,6 @@ class Expenses extends Component {
     const { search, fromDate, untilDate } = this.state;
     if (search) {
       expenses = expenses.filter(e => e.name.indexOf(search) != -1 || (e.description && e.description.indexOf(search) != -1));
-      console.log(search, expenses);
     }
     if (fromDate) expenses = expenses.filter(e => e.date > fromDate);
     if (untilDate) expenses = expenses.filter(e => e.date < untilDate);

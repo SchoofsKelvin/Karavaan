@@ -1,29 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 import DatePicker from 'react-native-datepicker';
 
 import {
-  Container,
-  Header,
-  Title,
-  Content,
   Button,
   Icon,
-  List,
-  ListItem,
-  Text,
-  H3,
-  Left,
-  Right,
-  Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
   View,
   Label,
 } from 'native-base';

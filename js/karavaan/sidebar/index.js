@@ -11,11 +11,6 @@ import {
   Left,
   Right,
   Badge,
-  Button,
-  View,
-  StyleProvider,
-  getTheme,
-  variables,
 } from 'native-base';
 
 import styles from './style';
@@ -204,6 +199,8 @@ const kitchensinkDatas = [
   },
 ];
 
+kitchensinkDatas.toString();
+
 class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -231,18 +228,18 @@ class SideBar extends Component {
                   </Text>
                 </Left>
                 {data.types &&
-         <Right style={{ flex: 1 }}>
-           <Badge
-             style={{
-               borderRadius: 3,
-               height: 25,
-               width: 72,
-               backgroundColor: data.bg,
-             }}
-           >
-             <Text style={styles.badgeText}>{`${data.types} Types`}</Text>
-           </Badge>
-         </Right>}
+                  <Right style={{ flex: 1 }}>
+                    <Badge
+                      style={{
+                        borderRadius: 3,
+                        height: 25,
+                        width: 72,
+                        backgroundColor: data.bg,
+                      }}
+                    >
+                      <Text style={styles.badgeText}>{`${data.types} Types`}</Text>
+                    </Badge>
+                  </Right>}
               </ListItem>)}
           />
         </Content>

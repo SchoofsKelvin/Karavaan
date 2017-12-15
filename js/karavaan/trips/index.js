@@ -13,14 +13,9 @@ import {
   List,
   ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
 } from 'native-base';
 
 import { Trip, SelectTrip, AddTrip } from '../model';
@@ -32,12 +27,6 @@ import EditExpense from '../edit-expense';
 import EditUser from '../edit-user';
 
 import { UserDueSummary, UserExpensesSummary, ValutasSummary } from '../summaries';
-
-import styles from '.';
-
-/* const datas = [
-  new Trip(),
-]; */
 
 class TripsInner extends Component {
   pickTrip(index: number) {
@@ -52,7 +41,7 @@ class TripsInner extends Component {
     const trips: Trip[] = this.props.trips;
     trips.sort((a, b) => (a.name.toLocaleUpperCase() > b.name.toLocaleUpperCase() ? 1 : -1));
     return (
-      <Container style={styles.container}>
+      <Container style={{ backgroundColor: '#fff' }}>
         <Header>
           <Left>
             <Button

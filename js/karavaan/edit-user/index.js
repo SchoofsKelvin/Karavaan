@@ -1,41 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, BackHandler, Keyboard } from 'react-native';
-import DatePicker from 'react-native-datepicker';
+import { BackHandler, Keyboard } from 'react-native';
 
 import {
   Container,
   Header,
   Title,
-  Content,
   Button,
   Icon,
-  List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
   ActionSheet,
   Subtitle,
   Form,
   Label,
   Toast,
-  CheckBox,
 } from 'native-base';
 
-import styles from '.';
-
-import { Trip, Expense, User, Currency, Valuta, SaveUser, DeleteUser } from '../model';
+import { User, SaveUser, DeleteUser } from '../model';
 
 class EditUser extends Component {
   constructor(props) {
@@ -137,7 +123,7 @@ class EditUser extends Component {
   render() {
     const user: User = this.props.user;
     return (
-      <Container style={styles.container} >
+      <Container style={{ backgroundColor: '#fff' }} >
         <Header hasTabs>
           <Left>
             <Button

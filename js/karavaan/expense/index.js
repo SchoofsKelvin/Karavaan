@@ -1,40 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, BackHandler } from 'react-native';
+import { ListView } from 'react-native';
 
 import {
   Container,
   Header,
   Title,
-  Content,
   Button,
   Icon,
   List,
   ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
-  Item,
-  Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
   ActionSheet,
   Subtitle,
 } from 'native-base';
 
-import styles from '.';
-
-import { Trip, Expense, User, Valuta, Currency, SelectExpenseEntry, DeleteExpenseEntry } from '../model';
+import { Expense, SelectExpenseEntry, DeleteExpenseEntry } from '../model';
 
 class ExpenseView extends Component {
   componentDidUpdate() {
-    console.log('componentWillUpdate', this.props);
     if (!this.props.expense) {
       this.props.navigation.goBack();
     }
@@ -67,7 +54,7 @@ class ExpenseView extends Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const valutas = this.props.expense.valutas;
     return (
-      <Container style={styles.container} >
+      <Container style={{ backgroundColor: '#fff' }} >
         <Header hasTabs>
           <Left>
             <Button
@@ -119,7 +106,7 @@ class ExpenseView extends Component {
               (<Button
                 full
                 danger
-                onPress={_ => this.promptDeleteEntry(secId, rowId, rowMap)}
+                onPress={() => this.promptDeleteEntry(secId, rowId, rowMap)}
                 style={{
                   flex: 1,
                   alignItems: 'center',

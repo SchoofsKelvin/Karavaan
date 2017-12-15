@@ -1,43 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
 
 import {
   Container,
-  Header,
-  Title,
   Content,
   Button,
-  Icon,
-  List,
-  ListItem,
   Text,
-  H3,
-  Left,
-  Right,
   Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
-  View,
-  ActionSheet,
-  Subtitle,
-  Form,
   Label,
-  Toast,
   Card,
   CardItem,
 } from 'native-base';
 
 import CurrencyInput from '../input/currency';
 
-import styles from '.';
-
-import { Trip, Expense, Valuta, Currency, SelectExpense, SetTripName, SetTripMainCurrency } from '../model';
+import { Trip, Currency, SelectExpense, SetTripName, SetTripMainCurrency } from '../model';
 
 const Summaries = [
   ['User Debts', 'UserDueSummary'],

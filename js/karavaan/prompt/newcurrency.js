@@ -1,14 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-
-import {
-  Modal,
-  Platform,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
 
 import {
   Form,
@@ -53,8 +44,8 @@ class NewCurrencyPrompt extends Prompt {
   }
 }
 
-function mapStateToProps(store) {
-  return { };
+function mapStateToProps() {
+  return {};
 }
 function mapDispatchToProps(dispatch) {
   return {

@@ -45,8 +45,4 @@ class Expense {
   }
 }
 
-const test = new Expense('a');
-test.date = Date();
-console.log('TEST', test.equalsProps(test));
-
 export default Expense;

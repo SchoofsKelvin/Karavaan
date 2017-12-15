@@ -11,30 +11,16 @@ import {
   Content,
   Button,
   Icon,
-  List,
-  ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Tab,
-  Tabs,
-  TabHeading,
   View,
-  Card,
-  CardItem,
-  Grid,
-  Col,
-  CheckBox,
-  Label,
 } from 'native-base';
 
-import { Trip, User, Valuta, Expense, ExpenseEntry, SelectExpense, StoreTemplate } from '../model';
+import { Trip, User, Expense, SelectExpense } from '../model';
 
 import DatePeriodPrompt from '../prompt/dateperiodprompt';
 
@@ -93,7 +79,6 @@ class UserExpensesSummary extends Component {
     const { search, fromDate, untilDate } = this.state;
     if (search) {
       expenses = expenses.filter(e => e.name.indexOf(search) != -1 || (e.description && e.description.indexOf(search) != -1));
-      console.log(search, expenses);
     }
     if (fromDate) expenses = expenses.filter(e => e.date > fromDate);
     if (untilDate) expenses = expenses.filter(e => e.date < untilDate);

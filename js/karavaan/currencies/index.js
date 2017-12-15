@@ -12,18 +12,13 @@ import {
   Content,
   Button,
   Icon,
-  List,
   ListItem,
   Text,
-  H3,
   Left,
   Right,
   Body,
   Item,
   Input,
-  Footer,
-  FooterTab,
-  Separator,
   Grid,
   Col,
   View,
@@ -37,24 +32,7 @@ import { Currency, NewCurrency, SetRate, DeleteCurrency } from '../model';
 
 import { formatAmount } from '../utils';
 
-// import EditCurrency from '../edit-currency';
-
 import styles from '.';
-
-function idk() {
-  return (
-    <ListItem
-      button
-      onPress={() => this.pickTrip(currency.tag)}
-      key={currency.tag}
-    >
-      <Grid>
-        <Col style={{ width: 70 }}><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.tag}</Text></Col>
-        <Col><Text style={{ textAlign: 'left', alignSelf: 'stretch' }}>{currency.name}</Text></Col>
-        <Col style={{ width: 100 }}><Text style={{ textAlign: 'right', alignSelf: 'stretch' }}>{currency.rate ? formatAmount(currency.rate, 4) : ''}</Text></Col>
-      </Grid>
-    </ListItem>);
-}
 
 const buttonMargin = { margin: '3%', width: '25%', height: 50 };
 const viewMargin = { margin: 15 };
@@ -75,7 +53,6 @@ class CurrenciesInner extends Component {
     this.props.setRate(currency, Number(rate) || null);
   }
   fetchRate(currency: Currency) {
-    console.log('fetchRate', currency);
     this.setState(s => ({ ...s, fetchRatePromptVisible: true, fetchRatePromptMessage: null }));
     fetch(`https://api.fixer.io/latest?base=USD&symbols=${currency.tag.toUpperCase()}`)
       .then(response => response.json())
@@ -103,7 +80,6 @@ class CurrenciesInner extends Component {
   }
   newCurrency() {
     this.setState(s => ({ ...s, newCurrencyPromptVisible: false }));
-    console.log('newCurrency', this.newCurrencyPrompt.tag, this.newCurrencyPrompt.name);
     this.props.newCurrency(this.newCurrencyPrompt.tag, this.newCurrencyPrompt.name);
   }
   renderHeader(currency: Currency) {
@@ -117,7 +93,6 @@ class CurrenciesInner extends Component {
       </View>);
   }
   renderContent(currency: Currency) {
-    console.log('renderContent', currency, this.rate);
     return (<View style={{ ...viewMargin, flexDirection: 'row', flexWrap: 'wrap' }}>
       <Button style={buttonMargin} onPress={() => this.fetchRate(currency)}><Text>Fetch rate</Text></Button>
       <Button style={buttonMargin} onPress={() => this.deleteCurrency(currency)}><Text>Delete</Text></Button>

@@ -1,10 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import {
   Modal,
-  Platform,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
   StyleSheet,
@@ -107,8 +105,8 @@ export default class Prompt extends Component {
   render() {
     const {
       title,
-      placeholder,
-      defaultValue,
+      // placeholder,
+      // defaultValue,
       cancelText,
       submitText,
       borderColor,
@@ -120,7 +118,7 @@ export default class Prompt extends Component {
       submitButtonTextStyle,
       cancelButtonStyle,
       cancelButtonTextStyle,
-      inputStyle,
+      // inputStyle,
     } = this.props;
     return (
       <Modal onRequestClose={() => this.close()} transparent visible={this.props.visible}>
@@ -129,7 +127,7 @@ export default class Prompt extends Component {
           <View style={[styles.dialogContent, { borderColor }, promptStyle]}>
             <View style={[styles.dialogTitle, { borderColor }]}>
               <Text style={[styles.dialogTitleText, titleStyle]}>
-                { title }
+                {title}
               </Text>
             </View>
             <View style={styles.dialogBody}>
