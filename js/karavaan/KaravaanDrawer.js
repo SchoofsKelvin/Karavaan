@@ -10,7 +10,7 @@ import Currencies from './currencies';
 
 import SideBar from './sidebar';
 
-import kitchensinkStuff from './kitchensink';
+// import kitchensinkStuff from './kitchensink';
 
 const KaravaanDrawer = DrawerNavigator(
   {
@@ -18,7 +18,7 @@ const KaravaanDrawer = DrawerNavigator(
     Trips: { screen: Trips },
     Debug: { screen: Debug },
     Currencies: { screen: Currencies },
-    ...kitchensinkStuff,
+    // ...kitchensinkStuff,
   },
   {
     initialRouteName: 'Home',

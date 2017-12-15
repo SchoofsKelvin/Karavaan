@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, StatusBar, BackHandler } from 'react-native';
+import { View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Container, Button, Text, Header, Title, Body } from 'native-base';
@@ -11,7 +11,6 @@ class Debug extends Component {
   render() {
     return (
       <Container>
-        <StatusBar barStyle="light-content" backgroundColor="#000" />
         <Header>
           <Body><Title>Developer Options</Title></Body>
         </Header>

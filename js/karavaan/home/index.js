@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, View, StatusBar, Dimensions } from 'react-native';
+import { Image, View, Dimensions } from 'react-native';
 
 import { Container, Button, Text } from 'native-base';
 
@@ -22,7 +22,6 @@ class Home extends Component {
     const styles = getStyle();
     return (
       <Container>
-        <StatusBar barStyle="light-content" backgroundColor="#000" />
         <Image source={launchscreenBg} style={styles.imageContainer} resizeMode="cover">
           <Container style={styles.logoContainer}>
             <Image source={launchscreenLogo} style={styles.logo} resizeMode="contain" />
