@@ -45,12 +45,11 @@ export function exchangeValuta(valuta: Valuta, target: Currency) {
 export function valutaEntry(valuta: Valuta, trip: Trip, key) {
   let amount = valuta.amount;
   const tag = valuta.currency;
-  let middle = tag == trip.mainCurrency && `${amount} ${tag}`;
+  let middle = tag == trip.mainCurrency && `${formatAmount(amount, 2)} ${tag}`;
   let middleStyle = middle ? textRight : textRateUnknown;
   if (!middle) {
-    const cur = trip.currencies.find(c => c.tag == tag);
-    if (cur.rate) {
-      const exchangedAmount = exchangeValuta(valuta, trip.mainCurrency);
+    const exchangedAmount = exchangeValuta(valuta, trip.mainCurrency);
+    if (exchangedAmount != null) {
       middle = `± ${formatAmount(exchangedAmount, 2)} ${trip.mainCurrency}`;
       middleStyle = textRight;
     }
