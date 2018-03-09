@@ -30,11 +30,14 @@ export class StoreTemplate {
 }
 
 export function EmptyData() {
+  Currency.reset();
   return new StoreTemplate();
 }
 
 export function DefaultData() {
   const initialState = new StoreTemplate();
+
+  Currency.reset();
 
   const expense = new Expense('Test expense 1');
   expense.addEntry('Kelvin', new Valuta('EUR', 12.49));

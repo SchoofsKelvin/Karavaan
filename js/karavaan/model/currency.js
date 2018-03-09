@@ -23,12 +23,16 @@ class Currency {
     static fromObject(data: Currency): Currency {
       return Object.assign(new Currency(), data);
     }
+
+    static reset() {
+      Currency.Currencies = [
+        Currency.Default,
+        new Currency('EUR', 'Euro', 0.8),
+        new Currency('IDK', "I don't know"),
+      ];
+    }
 }
 
-Currency.Currencies = [
-  Currency.Default,
-  new Currency('EUR', 'Euro', 0.8),
-  new Currency('IDK', "I don't know"),
-];
+Currency.reset();
 
 export default Currency;

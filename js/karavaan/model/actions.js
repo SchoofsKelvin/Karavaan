@@ -72,6 +72,7 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
     case RESET_DATA:
       state = DefaultData();
       state.save = true;
+      Currency.reset();
       break;
 
     case SET_TRIP_NAME: {
@@ -145,10 +146,10 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
     }
 
     case NEW_CURRENCY: {
-      const newCur = action.currency.toUpperCase();
+      const newCur = action.currency.tag.toUpperCase();
       const cur = Currency.Currencies.find(c => c.tag == newCur);
       if (cur) break;
-      Currency.Currencies.push(newCur);
+      Currency.Currencies.push(action.currency);
       break;
     }
     case SET_RATE: {
