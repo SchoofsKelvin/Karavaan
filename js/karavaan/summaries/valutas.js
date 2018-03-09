@@ -21,45 +21,6 @@ import { Trip, Valuta, SelectExpense, StoreTemplate } from '../model';
 
 import { valutaEntry } from '../utils';
 
-/*
-function createCard(user: User, trip: Trip) {
-  const expenses = trip.getExpensesForUser(user);
-  const valutas: { [string]: number } = {};
-  let total = 0;
-  expenses.forEach((expense) => {
-    expense.valutas.filter(e => e.user == user.name)
-      .forEach(({ valuta }) => {
-        const cur = valuta.currency;
-        const amount = valuta.amount;
-        valutas[cur] = (valutas[cur] || 0) + amount;
-        if (cur == trip.mainCurrency) {
-          total += amount;
-        } else if (cur.rate) {
-          total += cur.rate * amount;
-        }
-      });
-  });
-  total = formatAmount(total, 2);
-  const tColor = { color: (total == 0 && '#000') || (total < 0 ? '#0B0' : '#D00') };
-  return (<Card>
-    <CardItem>
-      <Left>
-        <Body style={{ flexDirection: 'row' }}>
-          <Text style={{ fontWeight: 'bold' }}>{user.name}</Text>
-          <Right><Text style={tColor}>Estimated total: {total} {trip.mainCurrency}</Text></Right>
-        </Body>
-      </Left>
-    </CardItem>
-    <CardItem style={{ paddingTop: 0 }}>
-      <List
-        dataArray={valutas}
-        renderRow={(amount, _, tag) => valutaEntry(new Valuta(tag, amount), trip)}
-      />
-    </CardItem>
-  </Card>);
-}
-*/
-
 class ValutasSummary extends Component {
   state = { external: false };
   toggleExternal() {
