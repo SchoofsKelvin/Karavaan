@@ -38,6 +38,10 @@ class Trip {
       trip.registeredUsers = data.registeredUsers.map(User.fromObject);
       return trip;
     }
+    usesCurrency(currency: Currency) {
+      currency = typeof currency === 'string' ? currency : currency.tag;
+      return this.expenses.find(expense => expense.valutas.find(e => e.valuta.currency == currency));
+    }
 }
 
 export default Trip;

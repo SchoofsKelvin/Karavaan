@@ -23,12 +23,13 @@ import {
   Col,
   View,
   Label,
+  Toast,
 } from 'native-base';
 
 import Prompt from '../prompt/prompt';
 import NewCurrencyPrompt from '../prompt/newcurrency';
 
-import { Currency, NewCurrency, SetRate, DeleteCurrency } from '../model';
+import { Trip, Currency, NewCurrency, SetRate, DeleteCurrency } from '../model';
 
 import { formatAmount } from '../utils';
 
@@ -76,11 +77,36 @@ class CurrenciesInner extends Component {
     this.setState(s => ({ ...s, newCurrencyPromptVisible: true }));
   }
   deleteCurrency(currency: Currency) {
+    const trips: Trip[] = this.props.trips;
+    if (trips.find(t => t.usesCurrency(currency))) {
+      Toast.show({
+        text: 'There are still expenses using this currency',
+        type: 'danger',
+        buttonText: 'Okay',
+      });
+      return;
+    }
     this.props.deleteCurrency(currency);
   }
   newCurrency() {
     this.setState(s => ({ ...s, newCurrencyPromptVisible: false }));
-    this.props.newCurrency(this.newCurrencyPrompt.tag, this.newCurrencyPrompt.name);
+    if (!this.newCurrencyPrompt.state.tag) {
+      Toast.show({
+        text: 'Invalid currency tag',
+        type: 'danger',
+        buttonText: 'Okay',
+      });
+      return;
+    }
+    if (!this.newCurrencyPrompt.state.name) {
+      Toast.show({
+        text: 'Invalid currency name',
+        type: 'danger',
+        buttonText: 'Okay',
+      });
+      return;
+    }
+    this.props.newCurrency(this.newCurrencyPrompt.state.tag, this.newCurrencyPrompt.state.name);
   }
   renderHeader(currency: Currency) {
     return (
