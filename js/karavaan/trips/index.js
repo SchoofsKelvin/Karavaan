@@ -71,10 +71,8 @@ class TripsInner extends Component {
                   button
                   onPress={() => this.pickTrip(data.guid)}
                 >
-                  <Text>{data.name}</Text>
-                  <Right>
-                    <Icon name="arrow-forward" />
-                  </Right>
+                  <Left><Text>{data.name}</Text></Left>
+                  <Right><Icon name="arrow-forward" /></Right>
                 </ListItem>)}
             />)}
         </Content>

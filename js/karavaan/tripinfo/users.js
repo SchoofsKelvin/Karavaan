@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   Text,
+  Left,
   Right,
 } from 'native-base';
 
@@ -28,8 +29,10 @@ class Users extends Component {
               button
               onPress={() => this.pickUser(user)}
             >
-              <Text>{user.name}</Text>
-              {user.external && (<Text style={{ color: '#BBB' }}> (external)</Text>)}
+              <Left>
+                <Text>{user.name}</Text>
+                {user.external && (<Text style={{ color: '#BBB' }}> (external)</Text>)}
+              </Left>
               <Right>
                 <Icon name="arrow-forward" />
               </Right>

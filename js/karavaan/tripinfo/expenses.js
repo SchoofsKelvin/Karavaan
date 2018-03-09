@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   Text,
+  Left,
   Right,
   Item,
   Input,
@@ -68,10 +69,8 @@ class Expenses extends Component {
               button
               onPress={() => this.pickExpense(index)}
             >
-              <Text>{exp.name}</Text>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
+              <Left><Text>{exp.name}</Text></Left>
+              <Right><Icon name="arrow-forward" /></Right>
             </ListItem>)}
         />) : (<Text style={textPadding}>Could not find any matching expenses</Text>)}
       </View>);

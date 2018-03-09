@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, View, Dimensions } from 'react-native';
+import { Image, View, Dimensions, ImageBackground } from 'react-native';
 
 import { Container, Button, Text } from 'native-base';
 
@@ -22,7 +22,7 @@ class Home extends Component {
     const styles = getStyle();
     return (
       <Container>
-        <Image source={launchscreenBg} style={styles.imageContainer} resizeMode="cover">
+        <ImageBackground source={launchscreenBg} style={styles.imageContainer} resizeMode="cover">
           <Container style={styles.logoContainer}>
             <Image source={launchscreenLogo} style={styles.logo} resizeMode="contain" />
             <View style={styles.h3view}>
@@ -43,7 +43,7 @@ class Home extends Component {
               <Text>See Trips</Text>
             </Button>
           </Container>
-        </Image>
+        </ImageBackground>
       </Container>
     );
   }
