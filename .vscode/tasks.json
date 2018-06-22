@@ -18,11 +18,12 @@
             "group": "build",
             "type": "shell",
             "windows": {
-                "command": "cd android; if($?) {./gradlew assembleDebug} if ($?) {adb install -r ./app/build/outputs/apk/app-debug.apk}"
+                "command": "cd android; if($?) {./gradlew assembleDebug --stacktrace --info} if ($?) {adb install -r ./app/build/outputs/apk/app-debug.apk}"
             },
             "linux": {
                 "command": "cd android && ./gradlew assembleDebug"
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "Build APK Release",

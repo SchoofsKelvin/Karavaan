@@ -64,4 +64,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCurrencyPrompt);
-

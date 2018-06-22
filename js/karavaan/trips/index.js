@@ -96,12 +96,12 @@ function mapStateToProps(store) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    pickTrip(index: number) {
-      dispatch(SelectTrip(index));
+    pickTrip(guid: string) {
+      dispatch(SelectTrip(guid));
     },
     addTrip() {
       dispatch(AddTrip());
-    },
+    }
   };
 }
 

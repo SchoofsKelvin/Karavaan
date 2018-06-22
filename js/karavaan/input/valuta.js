@@ -18,16 +18,16 @@ import { Currency, Valuta } from '../model';
 class ValutaInput extends Component {
   constructor(props) {
     super(props);
-    const cur: Valuta = this.props.value;
+    const valuta: Valuta = this.props.value;
     this.state = {
-      tag: cur && cur.currency,
-      amount: cur ? cur.amount : '',
+      tag: valuta ? valuta.currency : Currency.Currencies[0].tag,
+      amount: valuta ? valuta.amount : '',
     };
   }
   get value() {
     const casted = Number(this.state.amount);
     if (!casted) return null;
-    return new Valuta(this.state.tag, this.state.amount);
+    return new Valuta(this.state.tag, casted);
   }
   set value(valuta: Valuta) {
     this.setState(state => ({ ...state, ...valuta }), () => {
@@ -36,7 +36,10 @@ class ValutaInput extends Component {
     });
   }
   setAmount(amount: number) {
-    this.setState(state => ({ ...state, amount }), () => { this.value = this.value; });
+    this.setState(state => ({ ...state, amount }), () => {
+      if (!this.props.onValueChange) return;
+      this.props.onValueChange(this.value);
+    });
   }
   setCurrency(tag: string) {
     if (tag instanceof Currency) tag = tag.tag;

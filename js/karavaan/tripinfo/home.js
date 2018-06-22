@@ -93,6 +93,23 @@ class Home extends Component {
               </Body>
             </CardItem>
           </Card>
+          <Card>
+            <CardItem header>
+              <Text>Danger zone</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Button
+                    block
+                    danger
+                    style={{ margin: 5 }}
+                    onPress={this.props.promptDelete}
+                  >
+                    <Text>Delete</Text>
+                  </Button>
+              </Body>
+            </CardItem>
+          </Card>
         </Content>
       </Container>
     );

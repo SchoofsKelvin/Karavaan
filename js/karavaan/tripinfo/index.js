@@ -14,13 +14,14 @@ import {
   Tab,
   Tabs,
   TabHeading,
+  ActionSheet,
 } from 'native-base';
 
 import Home from './home';
 import Expenses from './expenses';
 import Users from './users';
 
-import { Trip, SelectExpense, SelectUser } from '../model';
+import { Trip, SelectExpense, SelectUser, DeleteTrip } from '../model';
 
 function tabHeader(name) {
   return (
@@ -31,9 +32,9 @@ function tabHeader(name) {
 }
 
 const tabs = [
-  { name: 'Home', get: ti => (<Home navigation={ti.props.navigation} />) },
-  { name: 'Expenses', get: ti => (<Expenses navigation={ti.props.navigation} getToggleSearch={t => ti.toggleSearch = t} />) },
-  { name: 'Users', get: ti => (<Users navigation={ti.props.navigation} />) },
+  { name: 'Home', get: (ti: TripInfo) => (<Home navigation={ti.props.navigation} promptDelete={() => ti.promptDelete()}/>) },
+  { name: 'Expenses', get: (ti: TripInfo) => (<Expenses navigation={ti.props.navigation} getToggleSearch={t => ti.toggleSearch = t} />) },
+  { name: 'Users', get: (ti: TripInfo) => (<Users navigation={ti.props.navigation} />) },
 ];
 
 class TripInfo extends Component {
@@ -54,6 +55,19 @@ class TripInfo extends Component {
   }
   toggleSearchExpenses() {
     if (this.toggleSearch) this.toggleSearch();
+  }
+  promptDelete() {
+    ActionSheet.show({
+      options: ['Delete', 'Cancel'],
+      cancelButtonIndex: 1,
+      destructiveButtonIndex: 0,
+      title: 'Delete this trip?',
+    }, (button) => {
+      if (button == 0) {
+        this.props.delete(this.props.trip.guid);
+        this.props.navigation.goBack();
+      }
+    });
   }
   render() {
     if (!this.props.trip) return (<Text>Loading...</Text>);
@@ -100,6 +114,9 @@ function mapDispatchToProps(dispatch) {
     },
     pickUser(user: User) {
       dispatch(SelectUser(user ? user.name : null));
+    },
+    delete(guid: string) {
+      dispatch(DeleteTrip(guid));
     },
   };
 }

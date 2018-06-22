@@ -84,7 +84,7 @@ rowID: string | number,
 highlightRow?: boolean */
 
 function mapStateToProps(store) {
-  const trip: Trip = store.trips.find(t => t.guid = store.selectedTrip);
+  const trip: Trip = store.trips.find(t => t.guid == store.selectedTrip);
   return {
     expenses: trip.expenses,
   };

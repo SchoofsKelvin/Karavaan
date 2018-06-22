@@ -6,6 +6,7 @@ import Trip from './trip';
 
 import { Save, Load } from './storage';
 import { NewStore, StoreTemplate, EmptyData, DefaultData } from './store';
+import Guid from './guid';
 
 export const SET_STATE = 'SET_STATE';
 export const RESET_DATA = 'RESET_DATA';
@@ -15,6 +16,7 @@ export const SET_TRIP_NAME = 'SET_TRIP_NAME';
 export const SET_TRIP_MAIN_CURRENCY = 'SET_TRIP_MAIN_CURRENCY';
 export const SELECT_TRIP = 'SELECT_TRIP';
 export const ADD_TRIP = 'ADD_TRIP';
+export const DELETE_TRIP = 'DELETE_TRIP';
 
 export const SELECT_EXPENSE = 'SELECT_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
@@ -40,6 +42,7 @@ export const SetTripName = (guid: string, newName: string) => ({ type: SET_TRIP_
 export const SetTripMainCurrency = (guid: string, currency: string) => ({ type: SET_TRIP_MAIN_CURRENCY, trip: guid, currency });
 export const SelectTrip = (guid: string) => ({ type: SELECT_TRIP, trip: guid });
 export const AddTrip = () => ({ type: ADD_TRIP });
+export const DeleteTrip = (guid: string) => ({ type: DELETE_TRIP, trip: guid });
 
 export const SelectExpense = (index: number) => ({ type: SELECT_EXPENSE, expense: index });
 export const DeleteExpense = () => ({ type: DELETE_EXPENSE });
@@ -102,8 +105,16 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
       let i = state.trips.find(t => t.name == 'Unnamed') && 1;
       while (i && state.trips.find(t => t.name == `Unnamed${i}`)) i += 1;
       const newTrip = new Trip(`Unnamed${i || ''}`);
+      while (state.trips.find(t => t.guid === newTrip.guid)) {
+        console.warn('GUID conflict for new trip');
+        newTrip.guid = Guid.raw();
+      }
       newState.selectedTrip = newTrip.guid;
       newState.trips = [...state.trips, newTrip];
+      break;
+    }
+    case DELETE_TRIP: {
+      newState.trips = state.trips.filter(t => t.guid !== action.trip);
       break;
     }
 
@@ -187,7 +198,7 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
           newState.selectedUser = newUser.name;
         }
       }
-      newState.trips = state.trips.map(trip => trip.guid = newTrip.guid ? newTrip : trip);
+      newState.trips = state.trips.map(trip => trip.guid == newTrip.guid ? newTrip : trip);
       break;
     }
 
@@ -197,6 +208,10 @@ export function Reducer(state: StoreTemplate = EmptyData(), action) {
   newState.Currencies = Currency.Currencies;
 
   const mergedState = Object.assign({}, state, newState);
+
+  if (mergedState.trips.some(trip => mergedState.trips.find(t => t !== trip && t.guid === trip.guid))) {
+    console.warn('GUID CONFLICT!');
+  }
 
   if (mergedState.save) Save(mergedState);
 
